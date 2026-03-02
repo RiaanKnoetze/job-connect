@@ -1,0 +1,409 @@
+/**
+ * Admin All jobs list: Preview column and Actions column.
+ *
+ * @package Job_Connect
+ */
+
+/* Preview column: eye icon button – lighter default, accent on hover (WP admin theme) */
+.jc-job-preview-btn {
+	padding: 0 8px !important;
+	min-width: 32px;
+	height: 32px;
+	line-height: 32px;
+	text-align: center;
+	border: 0;
+	background: none;
+	cursor: pointer;
+	color: #a7aaad;
+	transition: color 0.15s ease;
+}
+.jc-job-preview-btn:hover {
+	color: var(--wp-admin-theme-color, #2271b1) !important;
+	background-color: transparent !important;
+}
+.jc-job-preview-btn:focus {
+	color: var(--wp-admin-theme-color, #2271b1);
+	box-shadow: none;
+	outline: 1px solid var(--wp-admin-theme-color, #2271b1);
+	outline-offset: 0;
+}
+.jc-job-preview-btn i {
+	opacity: 0.9;
+}
+.jc-job-preview-btn:hover i,
+.jc-job-preview-btn:focus i {
+	opacity: 1;
+	color: inherit;
+}
+
+/* Actions column: secondary buttons */
+.jc-job-actions-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	align-items: center;
+}
+.jc-job-actions-row .button-secondary {
+	width: 2.3em;
+    height: 2em;
+    padding: 0;
+    text-align: center;
+    font-size: 0.9em;
+}
+.jc-job-actions-row .jc-job-action-trash:hover {
+	border-color: #b32d2e;
+	color: #b32d2e;
+}
+
+/* Preview column header: icon only */
+.column-jc_preview {
+	width: 44px;
+	text-align: center;
+}
+.column-jc_preview i {
+	font-size: 16px;
+	color: #50575e;
+	opacity: 0.3;
+}
+
+/* Modal overlay – aligned with WP admin / split-copy-merge style */
+.jc-job-preview-overlay {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 100000;
+	background-color: rgba(0, 0, 0, 0.85);
+	align-items: center;
+	justify-content: center;
+	padding: 24px;
+	box-sizing: border-box;
+}
+.jc-job-preview-overlay.is-open {
+	display: flex;
+}
+.jc-job-preview-modal-wrap {
+	background: #fefefe;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+	max-width: 980px;
+	width: 100%;
+	max-height: 90vh;
+	display: flex;
+	flex-direction: column;
+	position: relative;
+}
+.jc-job-preview-overlay .jc-job-preview-modal {
+	padding: 0;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	max-height: 90vh;
+}
+.jc-job-preview-modal-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 16px 20px;
+	border-bottom: 1px solid #c3c4c7;
+	background: #f6f7f7;
+	flex-shrink: 0;
+}
+.jc-job-preview-header-inner {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 8px 12px;
+	flex: 1;
+	min-width: 0;
+}
+.jc-job-preview-title {
+	margin: 0;
+	font-size: 1.25em;
+	font-weight: 600;
+	color: #1d2327;
+}
+.jc-job-preview-badges {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+.jc-job-preview-badge {
+	display: inline-block;
+	padding: 2px 8px;
+	font-size: 0.7em;
+	font-weight: 500;
+	border-radius: 3px;
+	vertical-align: middle;
+}
+.jc-job-preview-badge--featured {
+	background: var(--wp-admin-theme-color, #2271b1);
+	color: #fff;
+}
+.jc-job-preview-badge--filled {
+	background: #00a32a;
+	color: #fff;
+}
+.jc-job-preview-copy-link {
+	margin-right: 8px !important;
+	flex-shrink: 0;
+}
+.jc-job-preview-copy-link:disabled {
+	opacity: 0.6;
+	cursor: default;
+}
+.jc-job-preview-close {
+	width: 36px;
+	height: 36px;
+	padding: 0;
+	border: 0;
+	background: none;
+	font-size: 24px;
+	line-height: 1;
+	cursor: pointer;
+	color: #787c82;
+	transition: color 0.15s ease;
+	border-radius: 2px;
+}
+.jc-job-preview-close:hover,
+.jc-job-preview-close:focus {
+	color: #1d2327;
+	background: rgba(0, 0, 0, 0.05);
+}
+.jc-job-preview-close:focus {
+	outline: 1px solid var(--wp-admin-theme-color, #2271b1);
+	outline-offset: -1px;
+}
+.jc-job-preview-body {
+	flex: 1;
+	overflow-y: auto;
+	min-height: 0;
+	padding: 20px;
+	background: #fff;
+}
+
+/* Loading and error states */
+.jc-job-preview-loading,
+.jc-job-preview-error {
+	margin: 1em 0;
+	padding: 12px 16px;
+	border-radius: 4px;
+}
+.jc-job-preview-loading {
+	background: #f0f6fc;
+	color: #1d2327;
+}
+.jc-job-preview-error {
+	color: #b32d2e;
+	background: #fcf0f1;
+	border: 1px solid #d63638;
+}
+
+/* Job content inside modal – clear section styling */
+.jc-job-preview-modal .jc-job-preview-content {
+	max-height: none;
+	padding: 0;
+}
+.jc-job-preview-modal .job-listing-single {
+	margin: 0;
+}
+.jc-job-preview-modal .job-listing-single-header {
+	margin-bottom: 16px;
+	padding-bottom: 16px;
+	border-bottom: 1px solid #dcdcde;
+}
+.jc-job-preview-modal .job-listing-single-header h1 {
+	margin: 0 0 10px 0;
+	font-size: 1.35em;
+	font-weight: 600;
+	line-height: 1.3;
+	color: #1d2327;
+}
+/* Admin preview: header has no h1, meta on one row */
+.jc-job-preview-modal .job-listing-single--admin-preview .job-listing-single-header {
+	padding-top: 0;
+}
+.jc-job-preview-modal .job-featured-badge {
+	display: inline-block;
+	margin-left: 8px;
+	padding: 2px 8px;
+	font-size: 0.75em;
+	font-weight: 500;
+	background: var(--wp-admin-theme-color, #2271b1);
+	color: #fff;
+	border-radius: 3px;
+	vertical-align: middle;
+}
+/* Inline meta (frontend-style, not used in admin preview) */
+.jc-job-preview-modal .job-meta:not(.job-meta--admin) {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0 16px;
+	margin: 0 0 8px 0;
+	font-size: 13px;
+	color: #50575e;
+}
+.jc-job-preview-modal .job-meta:not(.job-meta--admin) > span:not(:first-child)::before {
+	content: " · ";
+	margin-right: 0;
+	color: #c3c4c7;
+}
+.jc-job-preview-modal .job-meta a {
+	color: var(--wp-admin-theme-color, #2271b1);
+	text-decoration: none;
+}
+.jc-job-preview-modal .job-meta a:hover {
+	text-decoration: underline;
+}
+
+/* Admin preview: job meta on one row, each item a pill with icon + background */
+.jc-job-preview-modal .job-meta--admin {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+	margin: 0 0 12px 0;
+	padding: 0;
+	font-size: 13px;
+	line-height: 1.4;
+}
+.jc-job-preview-modal .job-meta--admin .job-meta__item {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 6px 12px;
+	border-radius: 4px;
+	background: #f0f0f1;
+	color: #1d2327;
+}
+.jc-job-preview-modal .job-meta--admin .job-meta__item i {
+	opacity: 0.85;
+	color: #50575e;
+	font-size: 0.95em;
+}
+.jc-job-preview-modal .job-meta--admin .job-meta__value {
+	margin: 0;
+	padding: 0;
+	color: inherit;
+}
+.jc-job-preview-modal .job-meta--admin .job-meta__value a {
+	color: var(--wp-admin-theme-color, #2271b1);
+	text-decoration: none;
+}
+.jc-job-preview-modal .job-meta--admin .job-meta__value a:hover {
+	text-decoration: underline;
+}
+.jc-job-preview-modal .job-company-tagline {
+	margin: 0 0 10px 0;
+	font-size: 13px;
+	color: #50575e;
+	line-height: 1.4;
+}
+.jc-job-preview-modal .job-types-categories {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	margin: 0 0 10px 0;
+}
+.jc-job-preview-modal .job-type-tag {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 6px 12px;
+	font-size: 12px;
+	background: #f0f0f1;
+	color: #1d2327;
+	border-radius: 4px;
+}
+.jc-job-preview-modal .job-type-tag i {
+	opacity: 0.85;
+	color: #50575e;
+	font-size: 0.95em;
+}
+.jc-job-preview-modal .job-description {
+	margin: 0 0 16px 0;
+	font-size: 14px;
+	line-height: 1.6;
+	color: #1d2327;
+}
+.jc-job-preview-modal .job-categories-hashtags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 12px;
+	margin: 0 0 20px 0;
+	padding-top: 12px;
+	border-top: 1px solid #dcdcde;
+	font-size: 13px;
+}
+.jc-job-preview-modal .job-category-tag--hashtag {
+	display: inline-block;
+	padding: 4px 0;
+	background: none;
+	color: #50575e;
+	font-weight: 500;
+	border-radius: 0;
+}
+.jc-job-preview-modal .job-category-tag--hashtag:hover {
+	color: var(--wp-admin-theme-color, #2271b1);
+}
+.jc-job-preview-modal .job-salary,
+.jc-job-preview-modal .job-expires {
+	margin: 0 0 6px 0;
+	font-size: 13px;
+	color: #50575e;
+}
+.jc-job-preview-modal .job-description p {
+	margin: 0 0 12px 0;
+}
+.jc-job-preview-modal .job-description p:last-child {
+	margin-bottom: 0;
+}
+.jc-job-preview-modal .job-description ul,
+.jc-job-preview-modal .job-description ol {
+	margin: 0 0 12px 0;
+	padding-left: 24px;
+}
+.jc-job-preview-modal .job-apply-section {
+	margin: 0 0 16px 0;
+	padding: 16px;
+	background: #f6f7f7;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+}
+.jc-job-preview-modal .job-apply-section h3 {
+	margin: 0 0 10px 0;
+	font-size: 1em;
+	font-weight: 600;
+	color: #1d2327;
+}
+.jc-job-preview-modal .job-connect-apply-button {
+	display: inline-block;
+	padding: 6px 14px;
+	font-size: 13px;
+	font-weight: 500;
+	background: var(--wp-admin-theme-color, #2271b1);
+	color: #fff;
+	border-radius: 3px;
+	text-decoration: none;
+	transition: background 0.15s ease;
+}
+.jc-job-preview-modal .job-connect-apply-button:hover {
+	background: var(--wp-admin-theme-color-darker-10, #135e96);
+	color: #fff;
+}
+.jc-job-preview-modal .job-posted-date {
+	margin: 0;
+	font-size: 12px;
+	color: #787c82;
+}
+.jc-job-preview-modal .job-connect-notice {
+	padding: 10px 14px;
+	margin-bottom: 16px;
+	border-left: 4px solid #dba617;
+	background: #fcf9e8;
+	border-radius: 0 4px 4px 0;
+	font-size: 13px;
+}

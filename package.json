@@ -1,0 +1,12 @@
+{
+  "name": "job-connect",
+  "version": "1.0.0",
+  "description": "Job Connect WordPress plugin",
+  "scripts": {
+    "build": "wp-scripts build --config webpack.config.js",
+    "start": "wp-scripts start --config webpack.config.js"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^27.0.0"
+  }
+}
