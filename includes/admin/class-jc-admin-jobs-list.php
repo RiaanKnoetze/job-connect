@@ -25,6 +25,7 @@ class JC_Admin_Jobs_List {
 
 	/**
 	 * Add Preview (after Title/Position) and Actions columns.
+	 * Actions is inserted after the Filled column.
 	 *
 	 * @param array $columns Existing columns.
 	 * @return array
@@ -33,15 +34,23 @@ class JC_Admin_Jobs_List {
 		if ( ! is_array( $columns ) ) {
 			$columns = array();
 		}
-		$new = array();
+		$new   = array();
+		$added = false;
 		foreach ( $columns as $key => $label ) {
 			$new[ $key ] = $label;
 			// Insert preview column after title or job_position (WPJM renames title to job_position). No header label.
 			if ( $key === 'title' || $key === 'job_position' ) {
 				$new['jc_preview'] = '';
 			}
+			// Insert Actions column right after Filled (WPJM uses 'filled', writepanels may use 'job_filled').
+			if ( $key === 'filled' || $key === 'job_filled' ) {
+				$new['jc_actions'] = __( 'Actions', 'job-connect' );
+				$added             = true;
+			}
 		}
-		$new['jc_actions'] = __( 'Actions', 'job-connect' );
+		if ( ! $added ) {
+			$new['jc_actions'] = __( 'Actions', 'job-connect' );
+		}
 		return $new;
 	}
 
