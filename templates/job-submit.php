@@ -61,7 +61,7 @@ $val_textarea = function( $key ) use ( $edit_data ) {
 				'textarea_name' => 'job_description',
 				'textarea_rows' => 12,
 				'teeny'         => true,
-				'quicktags'     => true,
+				'quicktags'     => false,
 				'media_buttons' => false,
 				'wpautop'       => true,
 				'tinymce'       => array(
@@ -70,8 +70,7 @@ $val_textarea = function( $key ) use ( $edit_data ) {
 					'resize'   => true,
 					'wp_autoresize_on' => true,
 				),
-				'editor_class'   => 'job-connect-description-editor',
-				'editor_css'     => '.job-connect-description-editor { border: 1px solid #d4d4d8; border-radius: 6px; }',
+				'editor_class'     => 'job-connect-description-editor',
 				'drag_drop_upload' => false,
 			);
 			wp_editor( $description_content, 'job_description', $editor_settings );

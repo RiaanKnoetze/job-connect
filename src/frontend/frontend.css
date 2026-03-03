@@ -46,9 +46,15 @@
 .job-connect-submit-form .wp-editor-wrap,
 .job-connect-submit-form .wp-editor-container {
 	max-width: 100%;
+	border: 1px solid #d4d4d8;
+	border-radius: 6px;
 }
 .job-connect-submit-form .wp-editor-container textarea {
 	border-radius: 6px;
+}
+/* Only allow Visual editor: hide the "Text" / "Code" tab */
+.job-connect-submit-form .wp-editor-tabs .switch-html {
+	display: none !important;
 }
 
 /* Notices – Catalyst-style: icon, left accent, shadow, clear typography */
