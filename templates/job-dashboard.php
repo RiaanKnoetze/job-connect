@@ -162,7 +162,7 @@ $dashboard_base_url    = JC_Dashboard_Actions::get_dashboard_url();
 	</script>
 	<?php if ( $query->have_posts() ) : ?>
 		<div class="jc-dashboard-table-wrap overflow-x-auto text-left text-sm" role="region" aria-label="<?php esc_attr_e( 'Your job listings', 'job-connect' ); ?>">
-			<div class="jc-dashboard-grid min-w-[640px]" role="table">
+			<div class="jc-dashboard-grid sm:min-w-[640px]" role="table">
 				<div class="jc-dashboard-grid-header" role="row">
 					<div class="jc-dashboard-th jc-col-job" role="columnheader"><?php esc_html_e( 'Title', 'job-connect' ); ?></div>
 					<div class="jc-dashboard-th jc-col-date" role="columnheader"><?php esc_html_e( 'Date', 'job-connect' ); ?></div>
@@ -230,6 +230,7 @@ $dashboard_base_url    = JC_Dashboard_Actions::get_dashboard_url();
 					$company                = get_post_meta( $id, '_company_name', true );
 					?>
 					<div class="jc-dashboard-grid-row" role="row">
+						<div class="jc-dashboard-row-inner">
 						<div class="jc-dashboard-td jc-col-job" role="cell" data-label="<?php esc_attr_e( 'Title', 'job-connect' ); ?>">
 							<div class="flex items-center gap-4">
 								<div class="jc-dashboard-cell-icon flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-zinc-100 text-zinc-500" aria-hidden="true">
@@ -284,7 +285,18 @@ $dashboard_base_url    = JC_Dashboard_Actions::get_dashboard_url();
 										<a href="<?php echo esc_url( $action_delete_url ); ?>" class="jc-dashboard-action jc-dashboard-action-delete block w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50"><?php esc_html_e( 'Delete', 'job-connect' ); ?></a>
 									</div>
 								</details>
+								<div class="jc-dashboard-actions-inline" aria-label="<?php esc_attr_e( 'Actions', 'job-connect' ); ?>">
+									<?php if ( $can_edit ) : ?>
+										<a href="<?php echo esc_url( $action_edit_url ); ?>" class="jc-dashboard-action jc-dashboard-action-inline"><?php esc_html_e( 'Edit', 'job-connect' ); ?></a>
+									<?php endif; ?>
+									<?php if ( ! $is_filled && ( $status === 'publish' || $status === 'pending' ) ) : ?>
+										<a href="<?php echo esc_url( $action_mark_filled_url ); ?>" class="jc-dashboard-action jc-dashboard-action-inline"><?php esc_html_e( 'Mark filled', 'job-connect' ); ?></a>
+									<?php endif; ?>
+									<a href="<?php echo esc_url( $action_duplicate_url ); ?>" class="jc-dashboard-action jc-dashboard-action-inline"><?php esc_html_e( 'Duplicate', 'job-connect' ); ?></a>
+									<a href="<?php echo esc_url( $action_delete_url ); ?>" class="jc-dashboard-action jc-dashboard-action-inline jc-dashboard-action-delete"><?php esc_html_e( 'Delete', 'job-connect' ); ?></a>
+								</div>
 							</div>
+						</div>
 						</div>
 					</div>
 				<?php } ?>

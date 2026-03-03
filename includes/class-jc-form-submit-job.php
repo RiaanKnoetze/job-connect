@@ -89,7 +89,6 @@ class JC_Form_Submit_Job extends Abstract_JC_Form {
 			return $redirect_url;
 		}
 		if ( isset( $_POST['job_connect_submit'] ) ) {
-			$this->debug_log( 'redirect_canonical: preventing redirect to preserve POST' );
 			return false;
 		}
 		return $redirect_url;
@@ -208,53 +207,22 @@ class JC_Form_Submit_Job extends Abstract_JC_Form {
 	}
 
 	/**
-	 * Log debug message (when WP_DEBUG_LOG or JOB_CONNECT_SUBMIT_DEBUG is on).
-	 * With JOB_CONNECT_SUBMIT_DEBUG, writes to wp-content/job-connect-submit-debug.log.
-	 *
-	 * @param string $message Message to log.
-	 */
-	private function debug_log( $message ) {
-		$use_error_log = defined( 'WP_DEBUG' ) && WP_DEBUG && defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG;
-		$use_file      = defined( 'JOB_CONNECT_SUBMIT_DEBUG' ) && JOB_CONNECT_SUBMIT_DEBUG;
-		if ( ! $use_error_log && ! $use_file ) {
-			return;
-		}
-		$line = '[' . gmdate( 'Y-m-d H:i:s' ) . '] [Job Connect Submit] ' . $message . "\n";
-		if ( $use_error_log ) {
-			error_log( '[Job Connect Submit] ' . $message );
-		}
-		if ( $use_file && defined( 'WP_CONTENT_DIR' ) ) {
-			$log_file = WP_CONTENT_DIR . '/job-connect-submit-debug.log';
-			file_put_contents( $log_file, $line, FILE_APPEND | LOCK_EX );
-		}
-	}
-
-	/**
 	 * Process form submission.
 	 */
 	public function process() {
-		$request_method = isset( $_SERVER['REQUEST_METHOD'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) : 'unknown';
-		$has_submit    = isset( $_POST['job_connect_submit'] );
-		$has_nonce     = isset( $_POST['job_connect_submit_nonce'] );
-		$this->debug_log( sprintf( 'process() called | REQUEST_METHOD=%s | has job_connect_submit=%s | has nonce=%s', $request_method, $has_submit ? 'yes' : 'no', $has_nonce ? 'yes' : 'no' ) );
-
 		if ( ! isset( $_POST['job_connect_submit'] ) || ! isset( $_POST['job_connect_submit_nonce'] ) ) {
-			$this->debug_log( 'Early exit: missing job_connect_submit or nonce in POST' );
 			return;
 		}
 		// Only handle POST on front; avoid running in admin or on GET.
 		if ( is_admin() || ! isset( $_SERVER['REQUEST_METHOD'] ) || $_SERVER['REQUEST_METHOD'] !== 'POST' ) {
-			$this->debug_log( 'Early exit: is_admin=' . ( is_admin() ? 'yes' : 'no' ) . ' or not POST' );
 			return;
 		}
 		$nonce = isset( $_POST['job_connect_submit_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['job_connect_submit_nonce'] ) ) : '';
 		if ( ! wp_verify_nonce( $nonce, 'job_connect_submit_job' ) ) {
-			$this->debug_log( 'Early exit: nonce verification failed' );
 			$this->errors[] = __( 'Your session may have expired or the form was cached. Please try again.', 'job-connect' );
 			return;
 		}
 		if ( ! is_user_logged_in() && JC_Settings::get( 'jc_user_requires_account' ) === '1' ) {
-			$this->debug_log( 'Early exit: login required' );
 			$this->errors[] = __( 'You must be logged in to submit a job.', 'job-connect' );
 			return;
 		}
@@ -292,7 +260,6 @@ class JC_Form_Submit_Job extends Abstract_JC_Form {
 		}
 
 		if ( ! empty( $this->errors ) ) {
-			$this->debug_log( 'Validation failed: ' . implode( '; ', $this->errors ) );
 			return;
 		}
 
@@ -313,7 +280,6 @@ class JC_Form_Submit_Job extends Abstract_JC_Form {
 			);
 			$job_id = wp_update_post( $post_data );
 			if ( is_wp_error( $job_id ) ) {
-				$this->debug_log( 'wp_update_post failed: ' . $job_id->get_error_message() );
 				$this->errors[] = __( 'Could not update job. Please try again.', 'job-connect' );
 				return;
 			}
@@ -339,7 +305,6 @@ class JC_Form_Submit_Job extends Abstract_JC_Form {
 			);
 			$job_id = wp_insert_post( $post_data );
 			if ( is_wp_error( $job_id ) ) {
-				$this->debug_log( 'wp_insert_post failed: ' . $job_id->get_error_message() );
 				$this->errors[] = __( 'Could not create job. Please try again.', 'job-connect' );
 				return;
 			}
@@ -370,11 +335,9 @@ class JC_Form_Submit_Job extends Abstract_JC_Form {
 		$dashboard_page_id = (int) JC_Settings::get( 'jc_job_dashboard_page_id' );
 		$redirect = $dashboard_page_id ? get_permalink( $dashboard_page_id ) : get_permalink( $job_id );
 		$redirect = add_query_arg( $is_edit ? 'job_updated' : 'job_submitted', '1', $redirect );
-		$this->debug_log( 'Success: job_id=' . $job_id . ' (' . ( $is_edit ? 'updated' : 'created' ) . '), redirecting to ' . $redirect );
 		$file = '';
 		$line = 0;
 		if ( headers_sent( $file, $line ) ) {
-			$this->debug_log( 'Redirect failed: headers already sent in ' . $file . ' on line ' . $line );
 			$this->errors[] = $is_edit
 				? __( 'Job was updated but redirect failed. Please go to your dashboard.', 'job-connect' )
 				: __( 'Job was created but redirect failed. Please go to your dashboard.', 'job-connect' );

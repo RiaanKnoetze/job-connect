@@ -163,27 +163,4 @@ $val_textarea = function( $key ) use ( $edit_data ) {
 			<button type="submit" class="inline-flex items-center justify-center rounded-md bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" id="job-connect-submit-button"><?php echo $edit_job_id ? esc_html__( 'Update job', 'job-connect' ) : esc_html__( 'Submit job', 'job-connect' ); ?></button>
 		</p>
 	</form>
-	<?php
-	$jc_submit_debug = array(
-		'requestMethod' => isset( $_SERVER['REQUEST_METHOD'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) : 'unknown',
-		'errors'        => JC_Form_Submit_Job::instance()->get_errors(),
-	);
-	?>
-	<script>
-	(function() {
-		var jcSubmitDebug = <?php echo wp_json_encode( $jc_submit_debug ); ?>;
-		console.log('[Job Connect] Page loaded. Request method:', jcSubmitDebug.requestMethod, jcSubmitDebug.errors.length ? '| Server errors: ' + jcSubmitDebug.errors.join('; ') : '');
-		if (jcSubmitDebug.requestMethod === 'POST' && jcSubmitDebug.errors.length === 0) {
-			console.warn('[Job Connect] POST with no errors — redirect may have failed (e.g. headers already sent). Enable JOB_CONNECT_SUBMIT_DEBUG in wp-config.php and check wp-content/job-connect-submit-debug.log');
-		}
-		document.addEventListener('DOMContentLoaded', function() {
-			var form = document.getElementById('job-connect-submit-job-form');
-			if (form) {
-				form.addEventListener('submit', function() {
-					console.log('[Job Connect] Form submitting (POST) to', form.action || window.location.href);
-				});
-			}
-		});
-	})();
-	</script>
 </div>

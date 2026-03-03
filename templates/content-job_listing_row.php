@@ -18,8 +18,9 @@ $company  = get_post_meta( $job_id, '_company_name', true );
 $types    = get_the_terms( $job_id, 'job_listing_type' );
 $posted   = get_the_date( '', $job_id );
 ?>
-<div class="contents" role="row">
-	<div class="jc-col-job relative min-w-0 border-b border-zinc-950/5 px-4 py-4" role="cell">
+<div class="contents jc-listing-row" role="row">
+	<div class="jc-listing-row-inner">
+	<div class="jc-col-job relative min-w-0 border-b border-zinc-950/5 px-4 py-4" role="cell" data-label="<?php esc_attr_e( 'Job', 'job-connect' ); ?>">
 		<div class="flex items-center gap-4">
 			<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-zinc-100 text-zinc-500" aria-hidden="true">
 				<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
@@ -40,10 +41,10 @@ $posted   = get_the_date( '', $job_id );
 			</div>
 		</div>
 	</div>
-	<div class="jc-col-location relative min-w-0 border-b border-zinc-950/5 px-4 py-4 text-zinc-500" role="cell">
+	<div class="jc-col-location relative min-w-0 border-b border-zinc-950/5 px-4 py-4 text-zinc-500" role="cell" data-label="<?php esc_attr_e( 'Location', 'job-connect' ); ?>">
 		<?php echo $location ? esc_html( $location ) : '—'; ?>
 	</div>
-	<div class="jc-col-type relative min-w-0 border-b border-zinc-950/5 px-4 py-4 text-zinc-500" role="cell">
+	<div class="jc-col-type relative min-w-0 border-b border-zinc-950/5 px-4 py-4 text-zinc-500" role="cell" data-label="<?php esc_attr_e( 'Type', 'job-connect' ); ?>">
 		<?php if ( $types && ! is_wp_error( $types ) ) : ?>
 			<div class="flex flex-wrap gap-1.5">
 				<?php foreach ( $types as $term ) : ?>
@@ -54,7 +55,8 @@ $posted   = get_the_date( '', $job_id );
 			—
 		<?php endif; ?>
 	</div>
-	<div class="jc-col-actions relative shrink-0 border-b border-zinc-950/5 px-4 py-4" role="cell">
-		<a href="<?php echo esc_url( get_permalink( $job_id ) ); ?>" class="rounded px-2 py-1 text-sm font-medium text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"><?php esc_html_e( 'View', 'job-connect' ); ?></a>
+	<div class="jc-col-actions relative shrink-0 border-b border-zinc-950/5 px-4 py-4" role="cell" data-label="<?php esc_attr_e( 'Actions', 'job-connect' ); ?>">
+		<a href="<?php echo esc_url( get_permalink( $job_id ) ); ?>" class="jc-listing-view-link rounded px-2 py-1 text-sm font-medium text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"><?php esc_html_e( 'View', 'job-connect' ); ?></a>
+	</div>
 	</div>
 </div>

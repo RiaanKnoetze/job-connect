@@ -77,9 +77,9 @@ $filter_atts = array_merge( $atts, array(
 		<?php JC_Template::load( 'job-filters.php', array( 'atts' => $filter_atts ) ); ?>
 	<?php endif; ?>
 	<?php if ( $job_query->have_posts() ) : ?>
-		<div class="job-listings overflow-x-auto text-left text-sm text-zinc-950">
-			<div class="grid min-w-[max-content] grid-cols-[2fr_1fr_1fr_auto]" role="table" aria-label="<?php esc_attr_e( 'Job listings', 'job-connect' ); ?>">
-				<div class="contents text-zinc-500" role="row">
+		<div class="job-listings job-listings-grid overflow-x-auto text-left text-sm text-zinc-950">
+			<div class="jc-listings-table grid min-w-0 sm:min-w-[max-content] grid-cols-1 sm:grid-cols-[2fr_1fr_1fr_auto]" role="table" aria-label="<?php esc_attr_e( 'Job listings', 'job-connect' ); ?>">
+				<div class="contents jc-listings-header text-zinc-500" role="row">
 					<div class="jc-col-job min-w-0 border-b border-zinc-950/10 px-4 py-2 font-medium" role="columnheader"><?php esc_html_e( 'Job', 'job-connect' ); ?></div>
 					<div class="jc-col-location min-w-0 border-b border-zinc-950/10 px-4 py-2 font-medium" role="columnheader"><?php esc_html_e( 'Location', 'job-connect' ); ?></div>
 					<div class="jc-col-type min-w-0 border-b border-zinc-950/10 px-4 py-2 font-medium" role="columnheader"><?php esc_html_e( 'Type', 'job-connect' ); ?></div>
