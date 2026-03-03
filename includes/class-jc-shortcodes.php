@@ -36,6 +36,9 @@ class JC_Shortcodes {
 			'order'            => 'desc',
 			'show_filters'     => true,
 			'show_pagination'  => true,
+			'show_job_type'    => 'true',
+			'show_category'    => 'true',
+			'filters_layout'   => 'default',
 			'keywords'         => '',
 			'location'         => '',
 			'job_types'        => '',
@@ -43,9 +46,50 @@ class JC_Shortcodes {
 			'post_status'      => 'publish',
 		), $atts, 'jobs' );
 
+		$atts = self::normalize_jobs_atts( $atts );
+
 		ob_start();
 		JC_Template::load( 'job-listings.php', array( 'atts' => $atts ) );
 		return ob_get_clean();
+	}
+
+	/**
+	 * Normalize [jobs] shortcode atts (show_job_type, show_category, filters_layout).
+	 * Used by the shortcode and by the archive when it reads atts from the Jobs page.
+	 *
+	 * @param array $atts Attributes (e.g. from shortcode_atts or merged defaults).
+	 * @return array Normalized atts with show_job_type/show_category as bool, filters_layout as 'inline'|'default'.
+	 */
+	public static function normalize_jobs_atts( $atts ) {
+		$atts['show_job_type']  = self::parse_bool( isset( $atts['show_job_type'] ) ? $atts['show_job_type'] : 'true', true );
+		$atts['show_category'] = self::parse_bool( isset( $atts['show_category'] ) ? $atts['show_category'] : 'true', true );
+		$layout                 = isset( $atts['filters_layout'] ) ? sanitize_key( $atts['filters_layout'] ) : 'default';
+		$atts['filters_layout'] = ( $layout === 'inline' ) ? 'inline' : 'default';
+		return $atts;
+	}
+
+	/**
+	 * Parse a shortcode attribute as boolean (accepts true, false, 1, 0, yes, no).
+	 *
+	 * @param mixed $value   Attribute value (usually string).
+	 * @param bool  $default Default when value is empty or not recognized.
+	 * @return bool
+	 */
+	private static function parse_bool( $value, $default = true ) {
+		if ( $value === true || $value === false ) {
+			return $value;
+		}
+		if ( $value === '' || $value === null ) {
+			return $default;
+		}
+		$v = is_string( $value ) ? strtolower( trim( $value ) ) : $value;
+		if ( in_array( $v, array( 'true', '1', 'yes' ), true ) ) {
+			return true;
+		}
+		if ( in_array( $v, array( 'false', '0', 'no' ), true ) ) {
+			return false;
+		}
+		return $default;
 	}
 
 	/**

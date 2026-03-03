@@ -27,7 +27,10 @@ $args = array(
 );
 
 if ( ! empty( $search_keywords ) ) {
-	$args['s'] = $search_keywords;
+	$args['s']                 = $search_keywords;
+	$args['jc_search_keywords'] = $search_keywords;
+	add_filter( 'posts_join', array( 'JC_Job_Listings_Search', 'join_company' ), 10, 2 );
+	add_filter( 'posts_search', array( 'JC_Job_Listings_Search', 'search_company' ), 10, 2 );
 }
 
 $meta_query = array();
@@ -57,6 +60,11 @@ if ( ! empty( $tax_query ) ) {
 
 $job_query = new WP_Query( $args );
 
+if ( ! empty( $search_keywords ) ) {
+	remove_filter( 'posts_join', array( 'JC_Job_Listings_Search', 'join_company' ), 10 );
+	remove_filter( 'posts_search', array( 'JC_Job_Listings_Search', 'search_company' ), 10 );
+}
+
 $filter_atts = array_merge( $atts, array(
 	'search_keywords'  => $search_keywords,
 	'search_location'  => $search_location,
@@ -64,23 +72,31 @@ $filter_atts = array_merge( $atts, array(
 	'filter_category'  => $filter_category,
 ) );
 ?>
-<div class="job-connect-listings">
+<div class="job-connect-listings jc-content-wrap">
 	<?php if ( ! empty( $atts['show_filters'] ) ) : ?>
 		<?php JC_Template::load( 'job-filters.php', array( 'atts' => $filter_atts ) ); ?>
 	<?php endif; ?>
-	<div class="job-listings">
-		<?php
-		if ( $job_query->have_posts() ) {
-			while ( $job_query->have_posts() ) {
-				$job_query->the_post();
-				JC_Template::load( 'content-job_listing.php', array( 'post' => get_post() ) );
-			}
-			wp_reset_postdata();
-		} else {
-			JC_Template::load( 'content-no-jobs-found.php' );
-		}
-		?>
-	</div>
+	<?php if ( $job_query->have_posts() ) : ?>
+		<div class="job-listings overflow-x-auto text-left text-sm text-zinc-950">
+			<div class="grid min-w-[max-content] grid-cols-[2fr_1fr_1fr_auto]" role="table" aria-label="<?php esc_attr_e( 'Job listings', 'job-connect' ); ?>">
+				<div class="contents text-zinc-500" role="row">
+					<div class="jc-col-job min-w-0 border-b border-zinc-950/10 px-4 py-2 font-medium" role="columnheader"><?php esc_html_e( 'Job', 'job-connect' ); ?></div>
+					<div class="jc-col-location min-w-0 border-b border-zinc-950/10 px-4 py-2 font-medium" role="columnheader"><?php esc_html_e( 'Location', 'job-connect' ); ?></div>
+					<div class="jc-col-type min-w-0 border-b border-zinc-950/10 px-4 py-2 font-medium" role="columnheader"><?php esc_html_e( 'Type', 'job-connect' ); ?></div>
+					<div class="jc-col-actions shrink-0 border-b border-zinc-950/10 px-4 py-2 font-medium" role="columnheader"><span class="sr-only"><?php esc_html_e( 'Actions', 'job-connect' ); ?></span></div>
+				</div>
+				<?php
+				while ( $job_query->have_posts() ) {
+					$job_query->the_post();
+					JC_Template::load( 'content-job_listing_row.php', array( 'post' => get_post() ) );
+				}
+				wp_reset_postdata();
+				?>
+			</div>
+		</div>
+	<?php else : ?>
+		<?php JC_Template::load( 'content-no-jobs-found.php' ); ?>
+	<?php endif; ?>
 	<?php
 	$total_pages = (int) $job_query->max_num_pages;
 	$show_pagination = ! empty( $atts['show_pagination'] ) || $total_pages > 1;
@@ -100,7 +116,7 @@ $filter_atts = array_merge( $atts, array(
 			$base = add_query_arg( 'filter_category', $filter_category, $base );
 		}
 		?>
-		<nav class="job-connect-pagination" aria-label="<?php esc_attr_e( 'Job listings pagination', 'job-connect' ); ?>">
+		<nav class="job-connect-pagination mt-6 text-center" aria-label="<?php esc_attr_e( 'Job listings pagination', 'job-connect' ); ?>">
 			<?php
 			echo wp_kses_post( paginate_links( array(
 				'total'   => $total_pages,

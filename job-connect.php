@@ -35,6 +35,7 @@ require_once JC_PATH . 'includes/class-jc-settings.php';
 require_once JC_PATH . 'includes/class-jc-rest-settings.php';
 require_once JC_PATH . 'includes/class-jc-rest-jobs.php';
 require_once JC_PATH . 'includes/class-jc-template.php';
+require_once JC_PATH . 'includes/class-jc-job-listings-search.php';
 require_once JC_PATH . 'includes/class-jc-shortcodes.php';
 require_once JC_PATH . 'includes/class-jc-forms.php';
 require_once JC_PATH . 'includes/abstracts/abstract-jc-form.php';

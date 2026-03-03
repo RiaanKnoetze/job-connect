@@ -41,6 +41,17 @@ Job Connect provides a full-featured job board: job listings, employer submissio
 3. Go to Job Connect > Settings to configure
 4. Create pages and add the shortcodes; assign pages in Settings > Pages
 
+== Development ==
+
+Frontend pages use Tailwind CSS. After changing templates or `src/frontend/frontend.css`, rebuild the CSS:
+
+  npm install
+  npm run build:css
+
+Or run the full build (admin JS + frontend CSS):
+
+  npm run build
+
 == Changelog ==
 
 = 1.0.0 =

@@ -1,0 +1,113 @@
+/**
+ * Job Connect – Frontend styles (Catalyst-style with Tailwind)
+ * Design: zinc neutrals, blue focus rings, Inter font.
+ * @package Job_Connect
+ */
+
+@import url('https://rsms.me/inter/inter.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	/* Optional: set Inter as default sans (Catalyst uses it) */
+	body.job-connect-frontend,
+	.job-connect-listings,
+	.job-connect-dashboard,
+	.job-connect-submit-form,
+	.job-listing-single {
+		font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+	}
+}
+
+/* Theme overrides: hide theme blog elements on single job listing */
+.single-job-connect-listing .entry-header,
+.single-job-connect-listing .wp-block-post-title {
+	display: none !important;
+}
+.single-job-connect-listing .wp-block-group:has(.wp-block-post-author-name),
+.single-job-connect-listing .wp-block-group.has-small-font-size.has-accent-4-color {
+	display: none !important;
+}
+.single-job-connect-listing [aria-label="Post navigation"] {
+	display: none !important;
+}
+.single-job-connect-listing .wp-block-query {
+	display: none !important;
+}
+
+/* Override theme .entry-content p margin so notice message has no bottom margin */
+.entry-content .job-connect-notice p {
+	margin-bottom: 0 !important;
+}
+
+/* Notices – Catalyst-style: icon, left accent, shadow, clear typography */
+.job-connect-notice {
+	@apply flex flex-row items-center gap-3 rounded-lg border py-4 pl-4 pr-5 shadow-sm;
+}
+.job-connect-notice__icon {
+	@apply shrink-0;
+}
+.job-connect-notice__icon svg {
+	display: block;
+	width: 1.25rem;
+	height: 1.25rem;
+}
+.job-connect-notice__content {
+	@apply min-w-0 flex-1 text-sm font-medium leading-snug;
+}
+.job-connect-notice__content p {
+	@apply m-0;
+}
+.job-connect-notice--success {
+	@apply border-l-4 border-l-emerald-500 border-zinc-200 bg-white shadow-sm;
+}
+.job-connect-notice--success .job-connect-notice__icon {
+	@apply text-emerald-600;
+}
+.job-connect-notice--success .job-connect-notice__content {
+	@apply text-zinc-800;
+}
+.job-connect-notice--warning {
+	@apply border-l-4 border-l-amber-500 border-zinc-200 bg-white shadow-sm;
+}
+.job-connect-notice--warning .job-connect-notice__icon {
+	@apply text-amber-600;
+}
+.job-connect-notice--warning .job-connect-notice__content {
+	@apply text-zinc-800;
+}
+
+/* Pagination – Catalyst-style: zinc borders, current page solid zinc-900 */
+.job-connect-pagination .page-numbers {
+	@apply inline-block py-2 px-3 mx-0.5 border border-zinc-300 rounded-md no-underline text-sm font-medium text-zinc-700 bg-white shadow-sm transition-colors hover:bg-zinc-50 hover:border-zinc-400;
+}
+.job-connect-pagination .page-numbers.current {
+	@apply bg-zinc-900 text-white border-zinc-900 hover:bg-zinc-800 hover:border-zinc-800;
+}
+.job-connect-pagination .page-numbers.dots,
+.job-connect-pagination .page-numbers.prev,
+.job-connect-pagination .page-numbers.next {
+	@apply font-medium;
+}
+
+/* Filters – inline layout: form full width, visible fields expand equally, button keeps natural width */
+.job-connect-filters--inline {
+	width: 100%;
+}
+.job-connect-filters--inline .job-connect-filter-keywords,
+.job-connect-filters--inline .job-connect-filter-location,
+.job-connect-filters--inline .job-connect-filter-type,
+.job-connect-filters--inline .job-connect-filter-category {
+	flex: 1 1 0%;
+	min-width: 0;
+}
+.job-connect-filters--inline .job-connect-filter-keywords input,
+.job-connect-filters--inline .job-connect-filter-location input,
+.job-connect-filters--inline .job-connect-filter-type select,
+.job-connect-filters--inline .job-connect-filter-category select {
+	width: 100%;
+	min-width: 0;
+	box-sizing: border-box;
+}
