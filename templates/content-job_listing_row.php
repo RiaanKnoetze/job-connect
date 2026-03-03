@@ -11,7 +11,8 @@ defined( 'ABSPATH' ) || exit;
 if ( ! isset( $post ) || ! $post instanceof WP_Post ) {
 	return;
 }
-$job_id   = $post->ID;
+$job_id = $post->ID;
+JC_Job_Stats::record_impression( $job_id );
 $location = get_post_meta( $job_id, '_job_location', true );
 $company  = get_post_meta( $job_id, '_company_name', true );
 $types    = get_the_terms( $job_id, 'job_listing_type' );

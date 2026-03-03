@@ -140,7 +140,7 @@ $val_textarea = function( $key ) use ( $edit_data ) {
 			<label for="application" class="block text-sm font-medium text-zinc-700 mb-1.5"><?php esc_html_e( 'Application email or URL', 'job-connect' ); ?> *</label>
 			<input type="text" id="application" name="application" value="<?php echo esc_attr( is_array( $val( 'application' ) ) ? '' : (string) $val( 'application' ) ); ?>" required class="block w-full max-w-full rounded-md border border-zinc-300 px-3 py-2 text-zinc-900 shadow-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
 		</p>
-		<p class="m-0 pt-2">
+		<p class="job-connect-submit-button-wrap m-0 pt-2">
 			<button type="submit" class="inline-flex items-center justify-center rounded-md bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" id="job-connect-submit-button"><?php echo $edit_job_id ? esc_html__( 'Update job', 'job-connect' ) : esc_html__( 'Submit job', 'job-connect' ); ?></button>
 		</p>
 	</form>

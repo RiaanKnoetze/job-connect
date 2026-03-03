@@ -44,7 +44,8 @@
 
 /* Notices – Catalyst-style: icon, left accent, shadow, clear typography */
 .job-connect-notice {
-	@apply flex flex-row items-center gap-3 rounded-lg border py-4 pl-4 pr-5 shadow-sm;
+	@apply flex flex-row items-center gap-3 border py-4 pl-4 pr-5 shadow-sm;
+	border-radius: 3px !important;
 }
 .job-connect-notice__icon {
 	@apply shrink-0;
@@ -79,6 +80,58 @@
 	@apply text-zinc-800;
 }
 
+/* Primary button links – override theme link styles so they match <button> primary style */
+.job-connect-dashboard .jc-btn-primary,
+.job-connect-dashboard .jc-btn-primary:hover,
+.job-connect-dashboard .jc-btn-primary:focus {
+	text-decoration: none !important;
+	color: #fff !important;
+}
+.job-connect-dashboard .jc-dashboard-action,
+.job-connect-dashboard .jc-dashboard-action:hover,
+.job-connect-dashboard .jc-dashboard-action:focus {
+	text-decoration: none !important;
+}
+
+/* Submit job modal – Catalyst-style dialog with scrolling content */
+.jc-dialog-overlay {
+	@apply fixed inset-0 flex items-center justify-center p-4 bg-zinc-950/50;
+	z-index: 9999;
+}
+.jc-dialog-overlay[aria-hidden="true"] {
+	@apply hidden;
+}
+.jc-dialog-overlay .jc-dialog-backdrop {
+	@apply absolute inset-0 -z-[1];
+}
+.jc-dialog-panel {
+	@apply relative z-10 flex flex-col rounded-xl bg-white shadow-xl;
+	width: 60%;
+	max-height: 90vh;
+}
+.jc-dialog-title {
+	@apply text-base font-semibold text-zinc-900 px-6 pt-6 pb-1;
+}
+.jc-dialog-description {
+	@apply text-sm text-zinc-500 px-6 pb-4;
+}
+.jc-dialog-body {
+	@apply flex-1 min-h-0 overflow-y-auto px-6 pb-4 text-sm text-zinc-900;
+}
+.jc-dialog-body .job-connect-submit-form {
+	@apply my-0;
+}
+/* Hide the form’s built-in submit button when inside the dialog; submit is in dialog actions */
+.jc-dialog-body .job-connect-submit-button-wrap {
+	@apply hidden;
+}
+.jc-dialog-actions {
+	@apply flex flex-shrink-0 justify-end gap-3 px-6 py-4 border-t border-zinc-200 bg-zinc-50 rounded-b-xl;
+}
+.jc-dialog-actions .jc-dialog-cancel {
+	@apply inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-zinc-700 bg-white border border-zinc-300 shadow-sm transition-colors hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+}
+
 /* Pagination – Catalyst-style: zinc borders, current page solid zinc-900 */
 .job-connect-pagination .page-numbers {
 	@apply inline-block py-2 px-3 mx-0.5 border border-zinc-300 rounded-md no-underline text-sm font-medium text-zinc-700 bg-white shadow-sm transition-colors hover:bg-zinc-50 hover:border-zinc-400;
@@ -110,4 +163,68 @@
 	width: 100%;
 	min-width: 0;
 	box-sizing: border-box;
+}
+
+/* Job dashboard – search and actions */
+.job-connect-dashboard .jc-dashboard-intro {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+}
+.job-connect-dashboard .jc-dashboard-search {
+	flex: 1 1 0%;
+	min-width: 0;
+	max-width: 28rem;
+}
+.job-connect-dashboard .jc-actions-menu {
+	position: relative;
+}
+.job-connect-dashboard .jc-actions-menu[open] .jc-actions-menu-content {
+	display: block;
+}
+.job-connect-dashboard .jc-actions-menu-content {
+	z-index: 20;
+}
+
+/* Dashboard table: Catalyst-style grid (flex-based rows via display: contents) */
+.job-connect-dashboard .jc-dashboard-table-wrap {
+	--jc-dashboard-gutter: 1rem;
+}
+.job-connect-dashboard .jc-dashboard-grid {
+	display: grid;
+	grid-template-columns: 2fr 1fr 1fr 1fr 130px auto;
+	min-width: min-content;
+}
+.job-connect-dashboard .jc-dashboard-grid-header {
+	display: contents;
+}
+.job-connect-dashboard .jc-dashboard-grid-header .jc-dashboard-th {
+	border-bottom: 1px solid rgb(228 228 231); /* zinc-200 */
+	padding: 0.5rem var(--jc-dashboard-gutter, 1rem);
+	font-weight: 500;
+	color: rgb(113 113 122); /* text-zinc-500 */
+	text-align: left;
+}
+.job-connect-dashboard .jc-dashboard-grid-row {
+	display: contents;
+}
+.job-connect-dashboard .jc-dashboard-grid-row .jc-dashboard-td {
+	border-bottom: 1px solid rgb(228 228 231);
+	padding: 1rem var(--jc-dashboard-gutter, 1rem);
+	vertical-align: middle;
+}
+.job-connect-dashboard .jc-dashboard-grid-row .jc-dashboard-td.jc-col-actions {
+	overflow: visible;
+}
+.job-connect-dashboard .jc-dashboard-cell-icon {
+	flex-shrink: 0;
+}
+/* Hide native details marker so custom trigger shows */
+.job-connect-dashboard .jc-actions-menu-trigger::-webkit-details-marker {
+	display: none;
+}
+.job-connect-dashboard .jc-actions-menu-trigger::marker {
+	display: none;
 }
