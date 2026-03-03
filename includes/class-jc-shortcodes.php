@@ -133,6 +133,10 @@ class JC_Shortcodes {
 	 * @return string
 	 */
 	public function submit_job_form( $atts ) {
+		// Enqueue editor scripts so TinyMCE (Description field) works on the frontend.
+		wp_enqueue_editor();
+		wp_enqueue_media();
+		wp_tinymce_inline_scripts();
 		ob_start();
 		JC_Form_Submit_Job::instance()->output();
 		return ob_get_clean();

@@ -13,6 +13,27 @@ defined( 'ABSPATH' ) || exit;
 class JC_Template {
 
 	/**
+	 * Whether the active theme (or parent) provides a classic template file.
+	 * Returns false for block themes that rely on theme-compat, to avoid deprecation notices.
+	 *
+	 * @param string $filename Template filename (e.g. 'header.php', 'footer.php').
+	 * @return bool True if the theme has the file, false otherwise.
+	 */
+	public static function theme_has_template( $filename ) {
+		global $wp_stylesheet_path, $wp_template_path;
+		if ( ! isset( $wp_stylesheet_path ) || ! isset( $wp_template_path ) ) {
+			wp_set_template_globals();
+		}
+		if ( $wp_stylesheet_path && file_exists( $wp_stylesheet_path . '/' . $filename ) ) {
+			return true;
+		}
+		if ( is_child_theme() && $wp_template_path && file_exists( $wp_template_path . '/' . $filename ) ) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Locate a template file (theme override or plugin).
 	 *
 	 * @param string $template_name Template name relative to templates/ (e.g. 'job-listings.php').

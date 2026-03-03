@@ -11,40 +11,17 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$atts = array(
-	'per_page'        => JC_Settings::get( 'jc_per_page' ),
-	'orderby'         => 'date',
-	'order'           => 'desc',
-	'show_filters'    => true,
-	'show_pagination' => true,
-	'show_job_type'   => 'true',
-	'show_category'   => 'true',
-	'filters_layout'  => 'default',
-	'keywords'        => '',
-	'location'        => '',
-	'job_types'       => '',
-	'categories'      => '',
-	'post_status'     => 'publish',
-);
+$atts = JC_Post_Types::get_jobs_archive_atts();
 
-$jobs_page_id = (int) JC_Settings::get( 'jc_jobs_page_id' );
-if ( $jobs_page_id ) {
-	$jobs_page = get_post( $jobs_page_id );
-	if ( $jobs_page && $jobs_page->post_content && has_shortcode( $jobs_page->post_content, 'jobs' ) ) {
-		$pattern = get_shortcode_regex( array( 'jobs' ) );
-		if ( preg_match( '/' . $pattern . '/s', $jobs_page->post_content, $matches ) && ! empty( $matches[3] ) ) {
-			$parsed = shortcode_parse_atts( $matches[3] );
-			if ( is_array( $parsed ) ) {
-				$atts = array_merge( $atts, $parsed );
-			}
-		}
-	}
+if ( JC_Template::theme_has_template( 'header.php' ) ) {
+	get_header();
+} else {
+	JC_Template::load( 'block-theme-document-start.php' );
 }
 
-$atts = JC_Shortcodes::normalize_jobs_atts( $atts );
-
-get_header();
+$is_block_theme = ! JC_Template::theme_has_template( 'header.php' );
 ?>
+<?php if ( $is_block_theme ) : ?><main class="wp-block-group"><?php endif; ?>
 <div id="primary" class="content-area">
 	<div class="content-container site-container">
 		<div id="main" class="site-main">
@@ -56,5 +33,10 @@ get_header();
 		</div>
 	</div>
 </div>
+<?php if ( $is_block_theme ) : ?></main><?php endif; ?>
 <?php
-get_footer();
+if ( JC_Template::theme_has_template( 'footer.php' ) ) {
+	get_footer();
+} else {
+	JC_Template::load( 'block-theme-document-end.php' );
+}

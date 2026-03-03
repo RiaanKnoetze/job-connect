@@ -127,6 +127,13 @@ $dashboard_base_url    = JC_Dashboard_Actions::get_dashboard_url();
 			dialog.classList.remove('hidden');
 			document.body.style.overflow = 'hidden';
 			if (openBtn) openBtn.setAttribute('aria-expanded', 'true');
+			// Refresh TinyMCE description editor when modal opens (it may have been hidden on load).
+			setTimeout(function() {
+				if (typeof tinymce !== 'undefined') {
+					var ed = tinymce.get('job_description');
+					if (ed) ed.fire('resize');
+				}
+			}, 100);
 		}
 		function closeModal() {
 			if (!dialog) return;

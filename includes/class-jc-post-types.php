@@ -64,6 +64,7 @@ class JC_Post_Types {
 		add_filter( 'template_include', array( $this, 'job_template_include' ), 99 );
 		add_filter( 'the_content', array( $this, 'single_job_content' ), 5 );
 		add_filter( 'render_block', array( $this, 'suppress_blog_blocks_on_single_job' ), 10, 2 );
+		add_filter( 'render_block', array( $this, 'inject_jobs_archive_into_query_block' ), 10, 2 );
 		add_filter( 'body_class', array( $this, 'single_job_body_class' ), 10, 2 );
 	}
 
@@ -74,11 +75,16 @@ class JC_Post_Types {
 	 * @return string
 	 */
 	public function job_template_include( $template ) {
-		if ( is_post_type_archive( self::PT_LISTING ) ) {
-			$archive_template = JC_Template::locate( 'archive-job_listing.php' );
-			if ( file_exists( $archive_template ) ) {
-				return $archive_template;
-			}
+		if ( ! is_post_type_archive( self::PT_LISTING ) ) {
+			return $template;
+		}
+		// Block themes: use the theme's template so header/footer/layout match; we inject content via render_block.
+		if ( ! JC_Template::theme_has_template( 'header.php' ) ) {
+			return $template;
+		}
+		$archive_template = JC_Template::locate( 'archive-job_listing.php' );
+		if ( file_exists( $archive_template ) ) {
+			return $archive_template;
 		}
 		return $template;
 	}
@@ -105,6 +111,64 @@ class JC_Post_Types {
 		$output = ob_get_clean();
 		add_filter( 'the_content', array( $this, 'single_job_content' ), 5 );
 		return $output;
+	}
+
+	/**
+	 * On job_listing archive with block theme: replace the main Query block content with our job list.
+	 * This makes the jobs page use the theme's template (same header/footer/layout as other pages).
+	 *
+	 * @param string   $block_content Block HTML.
+	 * @param WP_Block $block        Block instance.
+	 * @return string
+	 */
+	public function inject_jobs_archive_into_query_block( $block_content, $parsed_block ) {
+		if ( ! is_post_type_archive( self::PT_LISTING ) ) {
+			return $block_content;
+		}
+		$name = isset( $parsed_block['blockName'] ) ? $parsed_block['blockName'] : '';
+		if ( $name !== 'core/query' ) {
+			return $block_content;
+		}
+		$atts = self::get_jobs_archive_atts();
+		return JC_Template::get_contents( 'job-listings.php', array( 'atts' => $atts ) );
+	}
+
+	/**
+	 * Default atts for the jobs archive (and shortcode from Jobs page when set).
+	 * Used by archive template and by inject_jobs_archive_into_query_block.
+	 *
+	 * @return array
+	 */
+	public static function get_jobs_archive_atts() {
+		$atts = array(
+			'per_page'        => JC_Settings::get( 'jc_per_page' ),
+			'orderby'         => 'date',
+			'order'           => 'desc',
+			'show_filters'    => true,
+			'show_pagination' => true,
+			'show_job_type'   => 'true',
+			'show_category'   => 'true',
+			'filters_layout'  => 'default',
+			'keywords'        => '',
+			'location'        => '',
+			'job_types'       => '',
+			'categories'      => '',
+			'post_status'     => 'publish',
+		);
+		$jobs_page_id = (int) JC_Settings::get( 'jc_jobs_page_id' );
+		if ( $jobs_page_id ) {
+			$jobs_page = get_post( $jobs_page_id );
+			if ( $jobs_page && $jobs_page->post_content && has_shortcode( $jobs_page->post_content, 'jobs' ) ) {
+				$pattern = get_shortcode_regex( array( 'jobs' ) );
+				if ( preg_match( '/' . $pattern . '/s', $jobs_page->post_content, $matches ) && ! empty( $matches[3] ) ) {
+					$parsed = shortcode_parse_atts( $matches[3] );
+					if ( is_array( $parsed ) ) {
+						$atts = array_merge( $atts, $parsed );
+					}
+				}
+			}
+		}
+		return JC_Shortcodes::normalize_jobs_atts( $atts );
 	}
 
 	/**

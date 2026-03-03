@@ -271,7 +271,7 @@ class JC_Form_Submit_Job extends Abstract_JC_Form {
 		if ( empty( $title ) ) {
 			$this->errors[] = __( 'Job title is required.', 'job-connect' );
 		}
-		if ( empty( $description ) ) {
+		if ( '' === trim( wp_strip_all_tags( $description ) ) ) {
 			$this->errors[] = __( 'Description is required.', 'job-connect' );
 		}
 		if ( empty( $application ) ) {

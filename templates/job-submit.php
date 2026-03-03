@@ -55,7 +55,27 @@ $val_textarea = function( $key ) use ( $edit_data ) {
 		</p>
 		<p class="m-0">
 			<label for="job_description" class="block text-sm font-medium text-zinc-700 mb-1.5"><?php esc_html_e( 'Description', 'job-connect' ); ?> *</label>
-			<textarea id="job_description" name="job_description" rows="8" required class="block w-full max-w-full rounded-md border border-zinc-300 px-3 py-2 text-zinc-900 shadow-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[120px] resize-y sm:text-sm"><?php echo esc_textarea( $val_textarea( 'job_description' ) ); ?></textarea>
+			<?php
+			$description_content = $val_textarea( 'job_description' );
+			$editor_settings    = array(
+				'textarea_name' => 'job_description',
+				'textarea_rows' => 12,
+				'teeny'         => true,
+				'quicktags'     => true,
+				'media_buttons' => false,
+				'wpautop'       => true,
+				'tinymce'       => array(
+					'toolbar1' => 'bold,italic,underline,strikethrough,|,bullist,numlist,|,link,unlink,|,blockquote,|,removeformat',
+					'toolbar2' => '',
+					'resize'   => true,
+					'wp_autoresize_on' => true,
+				),
+				'editor_class'   => 'job-connect-description-editor',
+				'editor_css'     => '.job-connect-description-editor { border: 1px solid #d4d4d8; border-radius: 6px; }',
+				'drag_drop_upload' => false,
+			);
+			wp_editor( $description_content, 'job_description', $editor_settings );
+			?>
 		</p>
 		<p class="m-0">
 			<label for="company_name" class="block text-sm font-medium text-zinc-700 mb-1.5"><?php esc_html_e( 'Company name', 'job-connect' ); ?></label>

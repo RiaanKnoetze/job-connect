@@ -42,6 +42,15 @@
 	margin-bottom: 0 !important;
 }
 
+/* Submit form: TinyMCE description editor – full width, match form styling */
+.job-connect-submit-form .wp-editor-wrap,
+.job-connect-submit-form .wp-editor-container {
+	max-width: 100%;
+}
+.job-connect-submit-form .wp-editor-container textarea {
+	border-radius: 6px;
+}
+
 /* Notices – Catalyst-style: icon, left accent, shadow, clear typography */
 .job-connect-notice {
 	@apply flex flex-row items-center gap-3 border py-4 pl-4 pr-5 shadow-sm;
