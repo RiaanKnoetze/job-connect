@@ -135,6 +135,9 @@ class JC_REST_Settings {
 
 		update_option( 'jc_setup_wizard_done', '1' );
 
+		// Flush rewrite rules so the Jobs page owns /jobs/ (archive is disabled when jc_jobs_page_id is set).
+		flush_rewrite_rules();
+
 		return new WP_REST_Response( JC_Settings::get_all(), 200 );
 	}
 
@@ -198,6 +201,9 @@ class JC_REST_Settings {
 				}
 			}
 			update_option( $key, $value );
+		}
+		if ( isset( $settings['jc_jobs_page_id'] ) ) {
+			flush_rewrite_rules();
 		}
 
 		return new WP_REST_Response( JC_Settings::get_all(), 200 );

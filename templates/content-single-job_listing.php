@@ -37,7 +37,7 @@ if ( $is_email ) {
 	$apply_url = 'mailto:' . $application . '?subject=' . $subject;
 }
 $is_pending_for_owner = ! $admin_preview && $post->post_status === 'pending' && is_user_logged_in() && (int) $post->post_author === (int) get_current_user_id();
-$archive_url = $admin_preview ? '' : get_post_type_archive_link( JC_Post_Types::PT_LISTING );
+$archive_url = $admin_preview ? '' : JC_Post_Types::get_jobs_list_url();
 ?>
 <article class="job-listing-single jc-content-wrap jc-single-job<?php echo $admin_preview ? ' job-listing-single--admin-preview' : ''; ?>" data-job-id="<?php echo esc_attr( (string) $job_id ); ?>">
 	<?php if ( $is_pending_for_owner ) : ?>

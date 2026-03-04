@@ -61,11 +61,42 @@ class JC_Post_Types {
 		add_action( 'init', array( $this, 'register_post_type' ), 0 );
 		add_action( 'init', array( $this, 'add_feed' ), 10 );
 		add_action( 'job_connect_check_expired_jobs', array( $this, 'check_for_expired_jobs' ) );
+		add_action( 'pre_get_posts', array( $this, 'restrict_jobs_page_search_to_listings' ), 10, 1 );
 		add_filter( 'template_include', array( $this, 'job_template_include' ), 99 );
 		add_filter( 'the_content', array( $this, 'single_job_content' ), 5 );
 		add_filter( 'render_block', array( $this, 'suppress_blog_blocks_on_single_job' ), 10, 2 );
 		add_filter( 'render_block', array( $this, 'inject_jobs_archive_into_query_block' ), 10, 2 );
 		add_filter( 'body_class', array( $this, 'single_job_body_class' ), 10, 2 );
+	}
+
+	/**
+	 * Restrict search to job_listing only when on the Jobs page with search_keywords in the URL.
+	 * Prevents themes or Query blocks from showing pages/posts in job search results.
+	 *
+	 * @param WP_Query $query The query instance.
+	 */
+	public function restrict_jobs_page_search_to_listings( $query ) {
+		if ( is_admin() || ! $query->get( 's' ) ) {
+			return;
+		}
+		$jobs_page_id = (int) JC_Settings::get( 'jc_jobs_page_id' );
+		if ( ! $jobs_page_id ) {
+			return;
+		}
+		$jobs_url = get_permalink( $jobs_page_id );
+		if ( ! $jobs_url ) {
+			return;
+		}
+		$jobs_path = trim( (string) parse_url( $jobs_url, PHP_URL_PATH ), '/' );
+		$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '';
+		$current_path = trim( (string) parse_url( $request_uri, PHP_URL_PATH ), '/' );
+		if ( $jobs_path === '' || ( $current_path !== $jobs_path && strpos( $current_path, $jobs_path . '/' ) !== 0 ) ) {
+			return;
+		}
+		if ( empty( $_GET['search_keywords'] ) || ! is_string( $_GET['search_keywords'] ) ) {
+			return;
+		}
+		$query->set( 'post_type', self::PT_LISTING );
 	}
 
 	/**
@@ -169,6 +200,22 @@ class JC_Post_Types {
 			}
 		}
 		return JC_Shortcodes::normalize_jobs_atts( $atts );
+	}
+
+	/**
+	 * URL for the jobs list (used for "Back to jobs" etc.). Returns the Jobs page permalink when set, otherwise the post type archive link.
+	 *
+	 * @return string
+	 */
+	public static function get_jobs_list_url() {
+		$jobs_page_id = (int) JC_Settings::get( 'jc_jobs_page_id' );
+		if ( $jobs_page_id ) {
+			$url = get_permalink( $jobs_page_id );
+			if ( $url ) {
+				return $url;
+			}
+		}
+		return get_post_type_archive_link( self::PT_LISTING ) ?: '';
 	}
 
 	/**
@@ -314,6 +361,11 @@ class JC_Post_Types {
 		$plural    = __( 'Jobs', 'job-connect' );
 
 		$has_archive = apply_filters( 'job_connect_enable_job_archive_page', true ) ? $permalink['jobs_archive_rewrite_slug'] : false;
+		// When a Jobs page is set (page with [jobs] shortcode), disable the native archive so that
+		// URL is served by the page and the theme's page layout is used instead of the archive template.
+		if ( (int) JC_Settings::get( 'jc_jobs_page_id' ) > 0 ) {
+			$has_archive = false;
+		}
 
 		$rewrite = array(
 			'slug'       => $permalink['job_rewrite_slug'],
