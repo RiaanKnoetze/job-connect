@@ -9,7 +9,25 @@
 defined( 'ABSPATH' ) || exit;
 
 if ( ! is_user_logged_in() ) {
-	echo '<p>' . esc_html__( 'You must be logged in to view your job dashboard.', 'job-connect' ) . '</p>';
+	?>
+	<div class="job-connect-require-login jc-content-wrap w-full my-6">
+		<div class="job-connect-notice job-connect-notice--warning mb-4 flex flex-row items-center gap-4 rounded-lg border-l-4 border-l-amber-500 border-zinc-200 bg-amber-50 py-3 pl-4 pr-4" role="alert">
+			<p class="!mb-0 m-0 min-w-0 flex-1 text-sm font-medium text-zinc-800">
+				<?php esc_html_e( 'You must be logged in to view your job dashboard.', 'job-connect' ); ?>
+			</p>
+		</div>
+		<div class="jc-auth-forms-row">
+			<div class="jc-auth-form-block jc-auth-form-login">
+				<?php echo do_shortcode( '[job_connect_login]' ); ?>
+			</div>
+			<?php if ( JC_Auth_Helpers::plugin_registration_enabled() ) : ?>
+				<div class="jc-auth-form-block jc-auth-form-register">
+					<?php echo do_shortcode( '[job_connect_register show_heading="1"]' ); ?>
+				</div>
+			<?php endif; ?>
+		</div>
+	</div>
+	<?php
 	return;
 }
 

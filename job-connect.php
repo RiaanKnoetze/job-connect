@@ -45,6 +45,8 @@ require_once JC_PATH . 'includes/class-jc-email-notifications.php';
 require_once JC_PATH . 'includes/class-jc-geocode.php';
 require_once JC_PATH . 'includes/class-jc-cron.php';
 require_once JC_PATH . 'includes/class-jc-dashboard-actions.php';
+require_once JC_PATH . 'includes/class-jc-auth-helpers.php';
+require_once JC_PATH . 'includes/class-jc-auth-handler.php';
 require_once JC_PATH . 'includes/class-jc-job-stats.php';
 
 if ( is_admin() ) {
@@ -127,6 +129,7 @@ final class Job_Connect {
 		// Instantiate form handlers early so their init hooks run before init fires (required for submit-job form processing).
 		JC_Form_Submit_Job::instance();
 		JC_Dashboard_Actions::instance();
+		new JC_Auth_Handler();
 		JC_Job_Stats::init();
 
 		if ( is_admin() ) {

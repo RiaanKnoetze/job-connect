@@ -19,7 +19,7 @@ Job Connect provides a full-featured job board: job listings, employer submissio
 
 * Custom post type for job listings
 * Job types and categories (taxonomies)
-* Shortcodes: [jobs], [job], [job_summary], [submit_job_form], [job_dashboard]
+* Shortcodes: [jobs], [job], [job_summary], [submit_job_form], [job_dashboard], [job_connect_login], [job_connect_register]
 * React-based settings page (Job Connect > Settings)
 * REST API for settings and (optional) public job list
 * Email notifications (admin and employer)
@@ -33,6 +33,18 @@ Job Connect provides a full-featured job board: job listings, employer submissio
 * `[job_summary id="123"]` – Job summary
 * `[submit_job_form]` – Submit a job (requires login if configured)
 * `[job_dashboard]` – Employer dashboard
+* `[job_connect_login]` – Login form (submits on same page; redirects back to dashboard or submit page after login)
+* `[job_connect_register]` – Registration form (submits on same page; errors shown inline). Optional attribute `show_heading="0"` to hide the form heading when embedded.
+
+= Hooks for addons =
+
+Registration can be extended (e.g. for candidate signup with a different role or extra fields):
+
+* `job_connect_registration_role` – Filter the role assigned to new users. Passes `( $role, $post_data )`.
+* `job_connect_register_user_data` – Filter the array passed to `wp_insert_user`. Passes `( $user_data, $post_data )`.
+* `job_connect_after_register` – Action after user is created. Passes `( $user_id, $post_data, $_POST )` so addons can save custom meta.
+* `job_connect_register_form_before_submit` – Action before the register submit button (e.g. for ReCAPTCHA or extra fields).
+* `job_connect_login_form_before_submit` – Action before the login submit button (e.g. for ReCAPTCHA).
 
 == Installation ==
 

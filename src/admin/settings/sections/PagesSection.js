@@ -32,6 +32,20 @@ export default function PagesSection( { settings, updateSetting } ) {
 					onChange={ ( v ) => updateSetting( 'jc_job_dashboard_page_id', v ? String( v ) : '' ) }
 				/>
 				<SelectControl
+					label={ __( 'Login page', 'job-connect' ) }
+					help={ __( 'Page containing [job_connect_login] shortcode.', 'job-connect' ) }
+					value={ String( settings.jc_login_page_id || '' ) }
+					options={ pageOptions }
+					onChange={ ( v ) => updateSetting( 'jc_login_page_id', v ? String( v ) : '' ) }
+				/>
+				<SelectControl
+					label={ __( 'Register page', 'job-connect' ) }
+					help={ __( 'Page containing [job_connect_register] shortcode. Required for "Create an account" link when registration is enabled.', 'job-connect' ) }
+					value={ String( settings.jc_register_page_id || '' ) }
+					options={ pageOptions }
+					onChange={ ( v ) => updateSetting( 'jc_register_page_id', v ? String( v ) : '' ) }
+				/>
+				<SelectControl
 					label={ __( 'Job listings page', 'job-connect' ) }
 					help={ __( 'Page containing [jobs] shortcode.', 'job-connect' ) }
 					value={ String( settings.jc_jobs_page_id || '' ) }

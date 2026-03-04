@@ -21,6 +21,8 @@ class JC_Shortcodes {
 		add_shortcode( 'job_summary', array( $this, 'output_job_summary' ) );
 		add_shortcode( 'submit_job_form', array( $this, 'submit_job_form' ) );
 		add_shortcode( 'job_dashboard', array( $this, 'job_dashboard' ) );
+		add_shortcode( 'job_connect_login', array( $this, 'login_form' ) );
+		add_shortcode( 'job_connect_register', array( $this, 'register_form' ) );
 	}
 
 	/**
@@ -152,6 +154,40 @@ class JC_Shortcodes {
 		$atts = shortcode_atts( array( 'posts_per_page' => 25 ), $atts, 'job_dashboard' );
 		ob_start();
 		JC_Template::load( 'job-dashboard.php', array( 'atts' => $atts ) );
+		return ob_get_clean();
+	}
+
+	/**
+	 * [job_connect_login] shortcode – login form with optional redirect.
+	 *
+	 * @param array $atts Shortcode attributes (optional redirect URL).
+	 * @return string
+	 */
+	public function login_form( $atts ) {
+		$atts    = shortcode_atts( array( 'redirect' => '' ), $atts, 'job_connect_login' );
+		$redirect = $atts['redirect'];
+		if ( $redirect === '' && isset( $_GET['redirect_to'] ) ) {
+			$redirect = esc_url_raw( wp_unslash( $_GET['redirect_to'] ) );
+		}
+		if ( $redirect === '' ) {
+			$redirect = JC_Auth_Helpers::get_login_redirect_url();
+		}
+		ob_start();
+		JC_Template::load( 'login-form.php', array( 'redirect' => $redirect ) );
+		return ob_get_clean();
+	}
+
+	/**
+	 * [job_connect_register] shortcode – registration form (errors shown inline).
+	 *
+	 * @param array $atts Shortcode attributes. show_heading (bool) to show the form heading (default true).
+	 * @return string
+	 */
+	public function register_form( $atts ) {
+		$atts = shortcode_atts( array( 'show_heading' => true ), $atts, 'job_connect_register' );
+		$show_heading = filter_var( $atts['show_heading'], FILTER_VALIDATE_BOOLEAN );
+		ob_start();
+		JC_Template::load( 'register-form.php', array( 'show_heading' => $show_heading ) );
 		return ob_get_clean();
 	}
 }

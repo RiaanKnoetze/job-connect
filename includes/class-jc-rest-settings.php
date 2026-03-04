@@ -123,6 +123,34 @@ class JC_REST_Settings {
 			$dashboard_page_id = $dashboard_page->ID;
 		}
 
+		$login_page = get_page_by_path( 'login', OBJECT, 'page' );
+		if ( ! $login_page ) {
+			$login_page_id = wp_insert_post( array(
+				'post_title'   => _x( 'Log in', 'Default page title', 'job-connect' ),
+				'post_name'    => 'login',
+				'post_content' => '[job_connect_login]',
+				'post_status'  => 'publish',
+				'post_type'    => 'page',
+				'post_author'  => get_current_user_id(),
+			) );
+		} else {
+			$login_page_id = $login_page->ID;
+		}
+
+		$register_page = get_page_by_path( 'register', OBJECT, 'page' );
+		if ( ! $register_page ) {
+			$register_page_id = wp_insert_post( array(
+				'post_title'   => _x( 'Create an account', 'Default page title', 'job-connect' ),
+				'post_name'    => 'register',
+				'post_content' => '[job_connect_register]',
+				'post_status'  => 'publish',
+				'post_type'    => 'page',
+				'post_author'  => get_current_user_id(),
+			) );
+		} else {
+			$register_page_id = $register_page->ID;
+		}
+
 		if ( ! empty( $jobs_page_id ) && ! is_wp_error( $jobs_page_id ) ) {
 			update_option( 'jc_jobs_page_id', $jobs_page_id );
 		}
@@ -131,6 +159,12 @@ class JC_REST_Settings {
 		}
 		if ( ! empty( $dashboard_page_id ) && ! is_wp_error( $dashboard_page_id ) ) {
 			update_option( 'jc_job_dashboard_page_id', $dashboard_page_id );
+		}
+		if ( ! empty( $login_page_id ) && ! is_wp_error( $login_page_id ) ) {
+			update_option( 'jc_login_page_id', $login_page_id );
+		}
+		if ( ! empty( $register_page_id ) && ! is_wp_error( $register_page_id ) ) {
+			update_option( 'jc_register_page_id', $register_page_id );
 		}
 
 		update_option( 'jc_setup_wizard_done', '1' );
@@ -182,7 +216,7 @@ class JC_REST_Settings {
 			}
 			if ( is_array( $defaults[ $key ] ) ) {
 				$value = is_array( $value ) ? array_map( 'sanitize_text_field', $value ) : array();
-			} elseif ( in_array( $key, array( 'jc_submit_job_form_page_id', 'jc_job_dashboard_page_id', 'jc_jobs_page_id', 'jc_terms_and_conditions_page_id' ), true ) ) {
+			} elseif ( in_array( $key, array( 'jc_submit_job_form_page_id', 'jc_job_dashboard_page_id', 'jc_jobs_page_id', 'jc_terms_and_conditions_page_id', 'jc_login_page_id', 'jc_register_page_id' ), true ) ) {
 				$value = absint( $value );
 			} elseif ( in_array( $key, array( 'jc_per_page', 'jc_submission_duration', 'jc_submission_limit', 'jc_admin_expiring_job_days', 'jc_employer_expiring_job_days' ), true ) ) {
 				$value = $value === '' ? '' : absint( $value );

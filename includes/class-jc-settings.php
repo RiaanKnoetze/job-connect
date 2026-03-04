@@ -105,6 +105,8 @@ class JC_Settings {
 			'jc_job_dashboard_page_id'      => '',
 			'jc_jobs_page_id'               => '',
 			'jc_terms_and_conditions_page_id' => '',
+			'jc_login_page_id'              => '',
+			'jc_register_page_id'           => '',
 			'jc_setup_wizard_done'          => '0',
 			// Job visibility.
 			'jc_browse_job_listings_capability' => array(),
@@ -197,7 +199,7 @@ class JC_Settings {
 			'job_listings'   => array( 'jc_per_page', 'jc_pagination_type', 'jc_hide_filled_positions', 'jc_hide_expired', 'jc_hide_expired_content', 'jc_enable_categories', 'jc_enable_default_category_multiselect', 'jc_category_filter_type', 'jc_enable_types', 'jc_multi_job_type', 'jc_enable_remote_position', 'jc_enable_salary', 'jc_enable_salary_currency', 'jc_default_salary_currency', 'jc_enable_salary_unit', 'jc_default_salary_unit', 'jc_display_location_address', 'jc_strip_job_description_shortcodes' ),
 			'job_submission'  => array( 'jc_user_requires_account', 'jc_enable_registration', 'jc_enable_scheduled_listings', 'jc_generate_username_from_email', 'jc_use_standard_password_setup_email', 'jc_registration_role', 'jc_submission_requires_approval', 'jc_user_can_edit_pending_submissions', 'jc_user_edit_published_submissions', 'jc_submission_duration', 'jc_submission_limit', 'jc_allowed_application_method', 'jc_show_agreement_job_submission' ),
 			'recaptcha'      => array( 'jc_recaptcha_label', 'jc_recaptcha_site_key', 'jc_recaptcha_secret_key', 'jc_enable_recaptcha_job_submission' ),
-			'pages'          => array( 'jc_submit_job_form_page_id', 'jc_job_dashboard_page_id', 'jc_jobs_page_id', 'jc_terms_and_conditions_page_id' ),
+			'pages'          => array( 'jc_submit_job_form_page_id', 'jc_job_dashboard_page_id', 'jc_jobs_page_id', 'jc_terms_and_conditions_page_id', 'jc_login_page_id', 'jc_register_page_id' ),
 			'job_visibility' => array( 'jc_browse_job_listings_capability', 'jc_view_job_listing_capability' ),
 			'email_notifications' => array( 'jc_email_admin_new_job', 'jc_email_admin_updated_job', 'jc_email_admin_expiring_job', 'jc_email_employer_expiring_job', 'jc_admin_expiring_job_days', 'jc_employer_expiring_job_days' ),
 		);
