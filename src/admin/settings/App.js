@@ -36,6 +36,7 @@ const TABS = [
 
 export default function App() {
 	const [ settings, setSettings ] = useState( window.jobConnectAdmin?.settings || {} );
+	const [ pages, setPages ] = useState( window.jobConnectAdmin?.pages || [] );
 	const [ saving, setSaving ] = useState( false );
 	const [ notice, setNotice ] = useState( null );
 
@@ -80,7 +81,14 @@ export default function App() {
 			case 'recaptcha':
 				return <RecaptchaSection { ...common } />;
 			case 'pages':
-				return <PagesSection { ...common } />;
+				return (
+					<PagesSection
+						{ ...common }
+						pageOptions={ pages }
+						onRunSetupWizard={ runSetupWizard }
+						runningWizard={ runningWizard }
+					/>
+				);
 			case 'job_visibility':
 				return <JobVisibilitySection { ...common } />;
 			case 'email_notifications':
@@ -105,7 +113,12 @@ export default function App() {
 					'Content-Type': 'application/json',
 				},
 			} );
-			setSettings( response );
+			if ( response.settings ) {
+				setSettings( response.settings );
+			}
+			if ( Array.isArray( response.pages ) ) {
+				setPages( response.pages );
+			}
 			setNotice( { type: 'success', message: __( 'Setup complete. Default pages have been created and assigned.', 'job-connect' ) } );
 		} catch ( err ) {
 			setNotice( {
@@ -126,7 +139,7 @@ export default function App() {
 						<strong>{ __( 'First time setup', 'job-connect' ) }</strong>
 					</CardHeader>
 					<CardBody>
-						<p>{ __( 'Create default pages (Jobs, Submit a Job, Job Dashboard) and assign them in Pages settings.', 'job-connect' ) }</p>
+						<p>{ __( 'Create default pages (Jobs, Submit a Job, Job Dashboard, Log in, Create an account) and assign them in the Pages tab below.', 'job-connect' ) }</p>
 						<Button
 							isPrimary
 							onClick={ runSetupWizard }

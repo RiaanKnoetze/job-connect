@@ -5,18 +5,32 @@
  */
 
 import { __ } from '@wordpress/i18n';
-import { Card, CardBody, CardHeader, SelectControl } from '@wordpress/components';
+import { Card, CardBody, CardHeader, SelectControl, Button, Spinner } from '@wordpress/components';
 
-const rawPages = window.jobConnectAdmin?.pages || [];
-const pageOptions = rawPages.length ? rawPages : [ { value: '', label: __( '— Select —', 'job-connect' ) } ];
-
-export default function PagesSection( { settings, updateSetting } ) {
+export default function PagesSection( { settings, updateSetting, pageOptions: pageOptionsProp, onRunSetupWizard, runningWizard } ) {
+	const rawPages = pageOptionsProp || window.jobConnectAdmin?.pages || [];
+	const pageOptions = rawPages.length ? rawPages : [ { value: '', label: __( '— Select —', 'job-connect' ) } ];
 	return (
 		<Card>
 			<CardHeader>
 				<h2 className="job-connect-section-title">{ __( 'Pages', 'job-connect' ) }</h2>
 			</CardHeader>
 			<CardBody>
+				{ onRunSetupWizard && (
+					<p style={ { marginBottom: '1em' } }>
+						<Button
+							isSecondary
+							onClick={ onRunSetupWizard }
+							disabled={ runningWizard }
+						>
+							{ runningWizard ? <Spinner /> : __( 'Create default pages (setup wizard)', 'job-connect' ) }
+						</Button>
+						{ ' ' }
+						<span className="description">
+							{ __( 'Creates Jobs, Submit a Job, Job Dashboard, Log in, and Create an account pages with shortcodes and assigns them here.', 'job-connect' ) }
+						</span>
+					</p>
+				) }
 				<SelectControl
 					label={ __( 'Submit job form page', 'job-connect' ) }
 					help={ __( 'Page containing [submit_job_form] shortcode.', 'job-connect' ) }

@@ -38,7 +38,7 @@ class JC_Admin {
 				<?php
 				printf(
 					/* translators: %s: link to settings page */
-					wp_kses_post( __( 'Job Connect is almost ready. <a href="%s">Run the setup wizard</a> to create your Jobs, Submit Job, and Dashboard pages.', 'job-connect' ) ),
+					wp_kses_post( __( 'Job Connect is almost ready. <a href="%s">Go to Settings</a> and use “Create default pages” in the Pages tab to create Jobs, Submit a Job, Job Dashboard, Log in, and Register pages.', 'job-connect' ) ),
 					esc_url( $url )
 				);
 				?>

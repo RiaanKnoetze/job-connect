@@ -172,7 +172,19 @@ class JC_REST_Settings {
 		// Flush rewrite rules so the Jobs page owns /jobs/ (archive is disabled when jc_jobs_page_id is set).
 		flush_rewrite_rules();
 
-		return new WP_REST_Response( JC_Settings::get_all(), 200 );
+		$pages   = get_pages( array( 'number' => 500 ) );
+		$page_options = array( array( 'value' => '', 'label' => __( '— Select —', 'job-connect' ) ) );
+		foreach ( $pages as $page ) {
+			$page_options[] = array( 'value' => (string) $page->ID, 'label' => $page->post_title );
+		}
+
+		return new WP_REST_Response(
+			array(
+				'settings' => JC_Settings::get_all(),
+				'pages'    => $page_options,
+			),
+			200
+		);
 	}
 
 	/**
