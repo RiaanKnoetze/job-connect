@@ -1,1 +1,105 @@
-.job-connect-settings-app{max-width:1100px;padding:1em 0}.job-connect-settings-title{font-size:1.5em;margin-bottom:.25em}.job-connect-settings-description{color:#646970;margin-bottom:1.5em}.jc-settings-section{align-items:flex-start;display:flex;gap:2em;margin-bottom:2em}.jc-settings-section__description{flex:0 0 260px;padding-top:.75em}.jc-settings-section__description h2{font-size:1em;font-weight:600;margin:0 0 .5em;padding:0}.jc-settings-section__description p{color:#646970;font-size:.875em;margin:0}.jc-settings-section__card{flex:1;min-width:0}.job-connect-tab-content{padding-top:1.5em}.job-connect-save-actions{border-top:1px solid #dcdcde;margin-top:1em;padding-top:1em}.jc-capability-field,.job-connect-setup-wizard-card{margin-bottom:1.5em}.jc-capability-field:last-child{margin-bottom:0}.jc-capability-field__label{display:block;font-weight:600;margin-bottom:.5em}.jc-capability-checkboxes{margin-bottom:.5em}.jc-snackbar-container{bottom:24px;right:184px;position:fixed;z-index:100000}body.folded .jc-snackbar-container{right:60px}
+/*!**********************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./src/admin/settings/admin.css ***!
+  \**********************************************************************************************************************************************************************************/
+/**
+ * Job Connect admin settings styles.
+ *
+ * @package Job_Connect
+ */
+
+.job-connect-settings-app {
+	max-width: 1100px;
+	padding: 1em 0;
+}
+
+.job-connect-settings-title {
+	font-size: 1.5em;
+	margin-bottom: 0.25em;
+}
+
+.job-connect-settings-description {
+	color: #646970;
+	margin-bottom: 1.5em;
+}
+
+/* Two-column section layout */
+.jc-settings-section {
+	display: flex;
+	gap: 2em;
+	margin-bottom: 2em;
+	align-items: flex-start;
+}
+
+.jc-settings-section__description {
+	flex: 0 0 260px;
+	padding-top: 0.75em;
+}
+
+.jc-settings-section__description h2 {
+	font-size: 1em;
+	font-weight: 600;
+	margin: 0 0 0.5em;
+	padding: 0;
+}
+
+.jc-settings-section__description p {
+	color: #646970;
+	font-size: 0.875em;
+	margin: 0;
+}
+
+.jc-settings-section__card {
+	flex: 1;
+	min-width: 0;
+}
+
+/* Tab content */
+.job-connect-tab-content {
+	padding-top: 1.5em;
+}
+
+/* Save actions */
+.job-connect-save-actions {
+	margin-top: 1em;
+	padding-top: 1em;
+	border-top: 1px solid #dcdcde;
+}
+
+/* Setup wizard card */
+.job-connect-setup-wizard-card {
+	margin-bottom: 1.5em;
+}
+
+/* Capability checkbox group */
+.jc-capability-field {
+	margin-bottom: 1.5em;
+}
+
+.jc-capability-field:last-child {
+	margin-bottom: 0;
+}
+
+.jc-capability-field__label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 0.5em;
+}
+
+.jc-capability-checkboxes {
+	margin-bottom: 0.5em;
+}
+
+/* Snackbar positioned at the bottom-left of the admin content area.
+ * WP admin sidebar is 160px wide by default, 36px when collapsed (body.folded).
+ */
+.jc-snackbar-container {
+	position: fixed;
+	bottom: 24px;
+	right: 184px; /* 160px sidebar + 24px padding */
+	z-index: 100000;
+}
+
+body.folded .jc-snackbar-container {
+	right: 60px; /* 36px sidebar + 24px padding */
+}
+
