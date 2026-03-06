@@ -32,6 +32,10 @@ class JC_Shortcodes {
 	 * @return string
 	 */
 	public function output_jobs( $atts ) {
+		if ( ! jc_user_can_browse_job_listings() ) {
+			return '<p class="jc-access-denied">' . esc_html__( 'You do not have permission to browse job listings.', 'job-connect' ) . '</p>';
+		}
+
 		$atts = shortcode_atts( array(
 			'per_page'         => JC_Settings::get( 'jc_per_page' ),
 			'orderby'          => 'date',
@@ -105,6 +109,9 @@ class JC_Shortcodes {
 		$id   = absint( $atts['id'] );
 		if ( ! $id ) {
 			return '';
+		}
+		if ( ! jc_user_can_view_job_listing( $id ) ) {
+			return '<p class="jc-access-denied">' . esc_html__( 'You do not have permission to view this job listing.', 'job-connect' ) . '</p>';
 		}
 		ob_start();
 		JC_Template::load( 'content-single-job_listing.php', array( 'job_id' => $id ) );

@@ -86,8 +86,10 @@ class JC_Admin_Settings {
 		}
 
 		$roles = array();
+		$all_roles = array();
 		if ( function_exists( 'get_editable_roles' ) ) {
 			foreach ( get_editable_roles() as $key => $role ) {
+				$all_roles[ $key ] = $role['name'];
 				if ( 'administrator' !== $key ) {
 					$roles[ $key ] = $role['name'];
 				}
@@ -98,13 +100,14 @@ class JC_Admin_Settings {
 			'job-connect-admin',
 			'jobConnectAdmin',
 			array(
-				'apiUrl'   => rest_url( 'jc/v1/' ),
-				'nonce'    => wp_create_nonce( 'wp_rest' ),
-				'restUrl'  => rest_url(),
-				'settings' => JC_Settings::get_all(),
-				'pages'    => $page_options,
-				'roles'    => $roles,
-				'adminUrl' => admin_url(),
+				'apiUrl'          => rest_url( 'jc/v1/' ),
+				'nonce'           => wp_create_nonce( 'wp_rest' ),
+				'restUrl'         => rest_url(),
+				'settings'        => JC_Settings::get_all(),
+				'pages'           => $page_options,
+				'roles'           => $roles,
+				'capabilityRoles' => $all_roles,
+				'adminUrl'        => admin_url(),
 			)
 		);
 	}

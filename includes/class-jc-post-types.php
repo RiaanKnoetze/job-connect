@@ -136,6 +136,9 @@ class JC_Post_Types {
 		if ( ! $job_id ) {
 			return $content;
 		}
+		if ( ! jc_user_can_view_job_listing( $job_id ) ) {
+			return '<p class="jc-access-denied">' . esc_html__( 'You do not have permission to view this job listing.', 'job-connect' ) . '</p>';
+		}
 		remove_filter( 'the_content', array( $this, 'single_job_content' ), 5 );
 		ob_start();
 		JC_Template::load( 'content-single-job_listing.php', array( 'job_id' => $job_id ) );

@@ -66,6 +66,56 @@ function job_connect() {
 }
 
 /**
+ * Check if the current user can browse job listings.
+ *
+ * Returns true when no capabilities are configured (public access).
+ *
+ * @return bool
+ */
+function jc_user_can_browse_job_listings() {
+	$caps = JC_Settings::get( 'jc_browse_job_listings_capability' );
+	if ( empty( $caps ) || ! is_array( $caps ) ) {
+		return true;
+	}
+	foreach ( $caps as $cap ) {
+		if ( current_user_can( $cap ) ) {
+			return true;
+		}
+	}
+	return false;
+}
+
+/**
+ * Check if the current user can view a single job listing.
+ *
+ * Returns true when no capabilities are configured (public access).
+ *
+ * @param int $job_id Post ID of the job listing.
+ * @return bool
+ */
+function jc_user_can_view_job_listing( $job_id ) {
+	$job = get_post( $job_id );
+
+	// Always allow preview.
+	if ( $job && 'preview' === $job->post_status ) {
+		return true;
+	}
+
+	$caps = JC_Settings::get( 'jc_view_job_listing_capability' );
+	if ( empty( $caps ) || ! is_array( $caps ) ) {
+		return true;
+	}
+
+	foreach ( $caps as $cap ) {
+		if ( current_user_can( $cap ) ) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
  * Main Job Connect class.
  */
 final class Job_Connect {

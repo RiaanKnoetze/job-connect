@@ -59,17 +59,7 @@ class JC_REST_Jobs {
 	 * @return bool
 	 */
 	public function can_browse_jobs( $request ) {
-		$caps = JC_Settings::get( 'jc_browse_job_listings_capability' );
-		if ( empty( $caps ) || ! is_array( $caps ) ) {
-			return true;
-		}
-		$user = wp_get_current_user();
-		foreach ( $caps as $cap ) {
-			if ( $user->has_cap( $cap ) ) {
-				return true;
-			}
-		}
-		return current_user_can( 'manage_options' );
+		return jc_user_can_browse_job_listings();
 	}
 
 	/**
@@ -79,17 +69,8 @@ class JC_REST_Jobs {
 	 * @return bool
 	 */
 	public function can_view_job( $request ) {
-		$caps = JC_Settings::get( 'jc_view_job_listing_capability' );
-		if ( empty( $caps ) || ! is_array( $caps ) ) {
-			return true;
-		}
-		$user = wp_get_current_user();
-		foreach ( $caps as $cap ) {
-			if ( $user->has_cap( $cap ) ) {
-				return true;
-			}
-		}
-		return current_user_can( 'manage_options' );
+		$job_id = (int) $request->get_param( 'id' );
+		return jc_user_can_view_job_listing( $job_id );
 	}
 
 	/**

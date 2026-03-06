@@ -4,7 +4,7 @@
  * @package Job_Connect
  */
 
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import {
 	Card,
@@ -12,9 +12,10 @@ import {
 	CardHeader,
 	Button,
 	Spinner,
-	Notice,
+	Snackbar,
 	TabPanel,
 } from '@wordpress/components';
+
 import apiFetch from '@wordpress/api-fetch';
 import GeneralSection from './sections/GeneralSection';
 import JobListingsSection from './sections/JobListingsSection';
@@ -43,6 +44,13 @@ export default function App() {
 	const updateSetting = ( key, value ) => {
 		setSettings( ( prev ) => ( { ...prev, [ key ]: value } ) );
 	};
+
+	useEffect( () => {
+		if ( notice?.type === 'success' ) {
+			const timer = setTimeout( () => setNotice( null ), 3000 );
+			return () => clearTimeout( timer );
+		}
+	}, [ notice ] );
 
 	const saveSettings = async () => {
 		setSaving( true );
@@ -133,6 +141,7 @@ export default function App() {
 	return (
 		<div className="job-connect-settings-app">
 			<h1 className="job-connect-settings-title">{ __( 'Job Connect Settings', 'job-connect' ) }</h1>
+			<p className="job-connect-settings-description">{ __( 'Manage job listings, submission rules, pages, notifications, and more.', 'job-connect' ) }</p>
 			{ ! setupWizardDone && (
 				<Card className="job-connect-setup-wizard-card" style={ { marginBottom: '1.5em' } }>
 					<CardHeader>
@@ -151,13 +160,13 @@ export default function App() {
 				</Card>
 			) }
 			{ notice && (
-				<Notice
-					status={ notice.type }
-					isDismissible
-					onRemove={ () => setNotice( null ) }
-				>
-					{ notice.message }
-				</Notice>
+				<div className="jc-snackbar-container">
+					<Snackbar
+						onRemove={ () => setNotice( null ) }
+					>
+						{ notice.message }
+					</Snackbar>
+				</div>
 			) }
 			<TabPanel
 				className="job-connect-tab-panel"
