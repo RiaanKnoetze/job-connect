@@ -41,11 +41,11 @@ $archive_url = $admin_preview ? '' : JC_Post_Types::get_jobs_list_url();
 ?>
 <article class="job-listing-single jc-content-wrap jc-single-job<?php echo $admin_preview ? ' job-listing-single--admin-preview' : ''; ?>" data-job-id="<?php echo esc_attr( (string) $job_id ); ?>">
 	<?php if ( $is_pending_for_owner ) : ?>
-		<div class="job-connect-notice job-connect-notice--warning mb-4 flex flex-row items-center gap-4 rounded-lg border-l-4 border-l-amber-500 bg-amber-50 py-3 pl-4 pr-4" role="status">
-			<span class="shrink-0 text-amber-600" aria-hidden="true">
-				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg>
-			</span>
-			<p class="!mb-0 m-0 min-w-0 flex-1 text-sm font-medium text-amber-900"><?php esc_html_e( 'This job is pending approval. It will be visible to the public once an administrator approves it.', 'job-connect' ); ?></p>
+		<div class="job-connect-notice job-connect-notice--warning mb-4" role="status">
+			<span class="job-connect-notice__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg></span>
+			<div class="job-connect-notice__content">
+				<?php esc_html_e( 'This job is pending approval. It will be visible to the public once an administrator approves it.', 'job-connect' ); ?>
+			</div>
 		</div>
 	<?php endif; ?>
 

@@ -60,13 +60,20 @@
 	display: none !important;
 }
 
-/* Notices – Catalyst-style: icon, left accent, shadow, clear typography */
+/* Notices – Tailwind UI alert style */
 .job-connect-notice {
-	@apply flex flex-row items-center gap-3 border py-4 pl-4 pr-5 shadow-sm;
-	border-radius: 3px !important;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	text-align: left;
+	margin-left: 0 !important;
+	margin-right: 0 !important;
+	gap: 0.75rem;
+	padding: 1rem;
+	border-radius: 0.375rem;
 }
 .job-connect-notice__icon {
-	@apply shrink-0;
+	flex-shrink: 0;
 }
 .job-connect-notice__icon svg {
 	display: block;
@@ -74,37 +81,79 @@
 	height: 1.25rem;
 }
 .job-connect-notice__content {
-	@apply min-w-0 flex-1 text-sm font-medium leading-snug;
+	flex: 1 1 0%;
+	min-width: 0;
+	text-align: left !important;
+	font-size: 0.875rem;
+	line-height: 1.45;
+	font-weight: 500;
 }
 .job-connect-notice__content p {
-	@apply m-0;
+	margin: 0;
 }
-.job-connect-notice--success {
-	@apply border-l-4 border-l-emerald-500 border-zinc-200 bg-white shadow-sm;
+.job-connect-notice__content a {
+	color: inherit;
+	text-decoration: underline;
 }
-.job-connect-notice--success .job-connect-notice__icon {
-	@apply text-emerald-600;
+.job-connect-notice__title {
+	font-weight: 600;
+	margin: 0 0 0.5rem;
 }
-.job-connect-notice--success .job-connect-notice__content {
-	@apply text-zinc-800;
+.job-connect-notice__list {
+	margin: 0.375rem 0 0;
+	padding-left: 1.25rem;
+	list-style-type: disc;
+	font-weight: 400;
 }
-.job-connect-notice--warning {
-	@apply border-l-4 border-l-amber-500 border-zinc-200 bg-white shadow-sm;
+.job-connect-notice__list li + li {
+	margin-top: 0.25rem;
 }
-.job-connect-notice--warning .job-connect-notice__icon {
-	@apply text-amber-600;
-}
-.job-connect-notice--warning .job-connect-notice__content {
-	@apply text-zinc-800;
-}
-.job-connect-notice p:empty {
-	display: none;
-}
+.job-connect-notice p:empty,
 .job-connect-notice br {
 	display: none;
 }
+/* Success */
+.job-connect-notice--success {
+	background-color: #f0fdf4; /* green-50 */
+}
+.job-connect-notice--success .job-connect-notice__icon {
+	color: #4ade80; /* green-400 */
+}
+.job-connect-notice--success .job-connect-notice__content {
+	color: #166534; /* green-800 */
+}
+/* Warning */
 .job-connect-notice--warning {
-	@apply bg-amber-50;
+	background-color: #fefce8; /* yellow-50 */
+}
+.job-connect-notice--warning .job-connect-notice__icon {
+	color: #facc15; /* yellow-400 */
+}
+.job-connect-notice--warning .job-connect-notice__content {
+	color: #854d0e; /* yellow-800 */
+}
+/* Error */
+.job-connect-notice--error {
+	background-color: #fef2f2; /* red-50 */
+}
+.job-connect-notice--error .job-connect-notice__icon {
+	color: #f87171; /* red-400 */
+}
+.job-connect-notice--error .job-connect-notice__content {
+	color: #991b1b; /* red-800 */
+}
+.job-connect-notice--error .job-connect-notice__list {
+	color: #b91c1c; /* red-700 */
+}
+/* Info */
+.job-connect-notice--info {
+	background-color: #eff6ff; /* blue-50 */
+}
+.job-connect-notice--info .job-connect-notice__icon {
+	color: #60a5fa; /* blue-400 */
+}
+.job-connect-notice--info .job-connect-notice__content {
+	color: #1d4ed8; /* blue-700 */
 }
 
 /* ========== Require login block & login form ========== */
@@ -701,13 +750,15 @@
 		margin-top: 0.25rem;
 	}
 	.jc-listing-row-inner .jc-col-location,
-	.jc-listing-row-inner .jc-col-type {
+	.jc-listing-row-inner .jc-col-type,
+	.jc-listing-row-inner .jc-col-salary {
 		padding: 0.5rem 1rem !important;
 		font-size: 0.875rem;
 		border-top: 1px solid rgb(244 244 245);
 	}
 	.jc-listing-row-inner .jc-col-location::before,
-	.jc-listing-row-inner .jc-col-type::before {
+	.jc-listing-row-inner .jc-col-type::before,
+	.jc-listing-row-inner .jc-col-salary::before {
 		content: attr(data-label);
 		display: block;
 		font-size: 0.6875rem;

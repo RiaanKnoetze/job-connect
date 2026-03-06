@@ -13,10 +13,11 @@ if ( ! isset( $post ) || ! $post instanceof WP_Post ) {
 }
 $job_id = $post->ID;
 JC_Job_Stats::record_impression( $job_id );
-$location = get_post_meta( $job_id, '_job_location', true );
-$company  = get_post_meta( $job_id, '_company_name', true );
-$types    = get_the_terms( $job_id, 'job_listing_type' );
-$posted   = get_the_date( '', $job_id );
+$location      = get_post_meta( $job_id, '_job_location', true );
+$company       = get_post_meta( $job_id, '_company_name', true );
+$types         = get_the_terms( $job_id, 'job_listing_type' );
+$posted        = get_the_date( '', $job_id );
+$salary        = JC_Settings::get( 'jc_enable_salary' ) === '1' ? get_post_meta( $job_id, '_job_salary', true ) : '';
 ?>
 <div class="contents jc-listing-row" role="row">
 	<div class="jc-listing-row-inner">
@@ -41,20 +42,27 @@ $posted   = get_the_date( '', $job_id );
 			</div>
 		</div>
 	</div>
-	<div class="jc-col-location relative min-w-0 border-b border-zinc-950/5 px-4 py-4 text-zinc-500" role="cell" data-label="<?php esc_attr_e( 'Location', 'job-connect' ); ?>">
+	<div class="jc-col-location border-b border-zinc-950/5 px-4 py-4 text-zinc-500" role="cell" data-label="<?php esc_attr_e( 'Location', 'job-connect' ); ?>">
 		<?php echo $location ? esc_html( $location ) : '—'; ?>
 	</div>
-	<div class="jc-col-type relative min-w-0 border-b border-zinc-950/5 px-4 py-4 text-zinc-500" role="cell" data-label="<?php esc_attr_e( 'Type', 'job-connect' ); ?>">
+	<div class="jc-col-type border-b border-zinc-950/5 px-4 py-4 text-zinc-500" role="cell" data-label="<?php esc_attr_e( 'Type', 'job-connect' ); ?>">
 		<?php if ( $types && ! is_wp_error( $types ) ) : ?>
 			<div class="flex flex-wrap gap-1.5">
 				<?php foreach ( $types as $term ) : ?>
-					<span class="inline-flex items-center gap-x-1.5 rounded-md px-1.5 py-0.5 text-sm font-medium bg-zinc-500/10 text-zinc-700"><?php echo esc_html( $term->name ); ?></span>
+					<span class="inline-flex items-center gap-x-1.5 rounded-md px-1.5 py-0.5 text-xs font-medium bg-zinc-500/10 text-zinc-700"><?php echo esc_html( $term->name ); ?></span>
 				<?php endforeach; ?>
 			</div>
 		<?php else : ?>
 			—
 		<?php endif; ?>
 	</div>
+	<?php if ( $salary !== '' ) : ?>
+	<div class="jc-col-salary border-b border-zinc-950/5 px-4 py-4 text-zinc-500" role="cell" data-label="<?php esc_attr_e( 'Salary', 'job-connect' ); ?>">
+		<?php echo esc_html( $salary ); ?>
+	</div>
+	<?php elseif ( JC_Settings::get( 'jc_enable_salary' ) === '1' ) : ?>
+	<div class="jc-col-salary border-b border-zinc-950/5 px-4 py-4 text-zinc-500" role="cell" data-label="<?php esc_attr_e( 'Salary', 'job-connect' ); ?>">—</div>
+	<?php endif; ?>
 	<div class="jc-col-actions relative shrink-0 border-b border-zinc-950/5 px-4 py-4" role="cell" data-label="<?php esc_attr_e( 'Actions', 'job-connect' ); ?>">
 		<a href="<?php echo esc_url( get_permalink( $job_id ) ); ?>" class="jc-listing-view-link rounded px-2 py-1 text-sm font-medium text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"><?php esc_html_e( 'View', 'job-connect' ); ?></a>
 	</div>

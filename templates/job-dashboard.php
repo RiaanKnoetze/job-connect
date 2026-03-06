@@ -11,10 +11,11 @@ defined( 'ABSPATH' ) || exit;
 if ( ! is_user_logged_in() ) {
 	?>
 	<div class="job-connect-require-login jc-content-wrap w-full my-6">
-		<div class="job-connect-notice job-connect-notice--warning mb-4 flex flex-row items-center gap-4 rounded-lg border-l-4 border-l-amber-500 border-zinc-200 bg-amber-50 py-3 pl-4 pr-4" role="alert">
-			<p class="!mb-0 m-0 min-w-0 flex-1 text-sm font-medium text-zinc-800">
+		<div class="job-connect-notice job-connect-notice--warning mb-4" role="alert">
+			<span class="job-connect-notice__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg></span>
+			<div class="job-connect-notice__content">
 				<?php esc_html_e( 'You must be logged in to view your job dashboard.', 'job-connect' ); ?>
-			</p>
+			</div>
 		</div>
 		<div class="jc-auth-forms-row">
 			<div class="jc-auth-form-block jc-auth-form-login">
@@ -58,51 +59,51 @@ $dashboard_base_url    = JC_Dashboard_Actions::get_dashboard_url();
 ?>
 <div class="job-connect-dashboard jc-content-wrap w-full my-6">
 	<?php if ( $show_success_notice ) : ?>
-		<div class="job-connect-notice job-connect-notice--success mb-4 flex flex-row items-center gap-4 rounded-lg border-l-4 border-l-emerald-500 bg-emerald-50 py-3 pl-4 pr-4" role="status">
-			<span class="shrink-0 text-emerald-600" aria-hidden="true">
-				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg>
-			</span>
-			<p class="!mb-0 m-0 min-w-0 flex-1 text-sm font-medium text-emerald-900"><?php esc_html_e( 'Your job was submitted successfully.', 'job-connect' ); ?></p>
+		<div class="job-connect-notice job-connect-notice--success mb-4" role="status">
+			<span class="job-connect-notice__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg></span>
+			<div class="job-connect-notice__content">
+				<?php esc_html_e( 'Your job was submitted successfully.', 'job-connect' ); ?>
+			</div>
 		</div>
 	<?php endif; ?>
 	<?php if ( $show_updated_notice ) : ?>
-		<div class="job-connect-notice job-connect-notice--success mb-4 flex flex-row items-center gap-4 rounded-lg border-l-4 border-l-emerald-500 bg-emerald-50 py-3 pl-4 pr-4" role="status">
-			<span class="shrink-0 text-emerald-600" aria-hidden="true">
-				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg>
-			</span>
-			<p class="!mb-0 m-0 min-w-0 flex-1 text-sm font-medium text-emerald-900"><?php esc_html_e( 'Your job was updated successfully.', 'job-connect' ); ?></p>
+		<div class="job-connect-notice job-connect-notice--success mb-4" role="status">
+			<span class="job-connect-notice__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg></span>
+			<div class="job-connect-notice__content">
+				<?php esc_html_e( 'Your job was updated successfully.', 'job-connect' ); ?>
+			</div>
 		</div>
 	<?php endif; ?>
 	<?php if ( $show_marked_filled ) : ?>
-		<div class="job-connect-notice job-connect-notice--success mb-4 flex flex-row items-center gap-4 rounded-lg border-l-4 border-l-emerald-500 bg-emerald-50 py-3 pl-4 pr-4" role="status">
-			<span class="shrink-0 text-emerald-600" aria-hidden="true">
-				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg>
-			</span>
-			<p class="!mb-0 m-0 min-w-0 flex-1 text-sm font-medium text-emerald-900"><?php esc_html_e( 'Job marked as filled.', 'job-connect' ); ?></p>
+		<div class="job-connect-notice job-connect-notice--success mb-4" role="status">
+			<span class="job-connect-notice__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg></span>
+			<div class="job-connect-notice__content">
+				<?php esc_html_e( 'Job marked as filled.', 'job-connect' ); ?>
+			</div>
 		</div>
 	<?php endif; ?>
 	<?php if ( $show_duplicated ) : ?>
-		<div class="job-connect-notice job-connect-notice--success mb-4 flex flex-row items-center gap-4 rounded-lg border-l-4 border-l-emerald-500 bg-emerald-50 py-3 pl-4 pr-4" role="status">
-			<span class="shrink-0 text-emerald-600" aria-hidden="true">
-				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg>
-			</span>
-			<p class="!mb-0 m-0 min-w-0 flex-1 text-sm font-medium text-emerald-900"><?php esc_html_e( 'Job duplicated. You can edit the new draft from this dashboard.', 'job-connect' ); ?></p>
+		<div class="job-connect-notice job-connect-notice--success mb-4" role="status">
+			<span class="job-connect-notice__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg></span>
+			<div class="job-connect-notice__content">
+				<?php esc_html_e( 'Job duplicated. You can edit the new draft from this dashboard.', 'job-connect' ); ?>
+			</div>
 		</div>
 	<?php endif; ?>
 	<?php if ( $show_deleted ) : ?>
-		<div class="job-connect-notice job-connect-notice--success mb-4 flex flex-row items-center gap-4 rounded-lg border-l-4 border-l-emerald-500 bg-emerald-50 py-3 pl-4 pr-4" role="status">
-			<span class="shrink-0 text-emerald-600" aria-hidden="true">
-				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg>
-			</span>
-			<p class="!mb-0 m-0 min-w-0 flex-1 text-sm font-medium text-emerald-900"><?php esc_html_e( 'Job moved to trash.', 'job-connect' ); ?></p>
+		<div class="job-connect-notice job-connect-notice--success mb-4" role="status">
+			<span class="job-connect-notice__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg></span>
+			<div class="job-connect-notice__content">
+				<?php esc_html_e( 'Job moved to trash.', 'job-connect' ); ?>
+			</div>
 		</div>
 	<?php endif; ?>
 	<?php if ( $show_error ) : ?>
-		<div class="job-connect-notice job-connect-notice--warning mb-4 flex flex-row items-center gap-4 rounded-lg border-l-4 border-l-amber-500 bg-amber-50 py-3 pl-4 pr-4" role="alert">
-			<span class="shrink-0 text-amber-600" aria-hidden="true">
-				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg>
-			</span>
-			<p class="!mb-0 m-0 min-w-0 flex-1 text-sm font-medium text-amber-900"><?php echo esc_html( $show_error === 'nonce' ? __( 'Security check failed. Please try again.', 'job-connect' ) : ( $show_error === 'permission' ? __( 'You do not have permission to perform this action.', 'job-connect' ) : __( 'Something went wrong. Please try again.', 'job-connect' ) ) ); ?></p>
+		<div class="job-connect-notice job-connect-notice--warning mb-4" role="alert">
+			<span class="job-connect-notice__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg></span>
+			<div class="job-connect-notice__content">
+				<?php echo esc_html( $show_error === 'nonce' ? __( 'Security check failed. Please try again.', 'job-connect' ) : ( $show_error === 'permission' ? __( 'You do not have permission to perform this action.', 'job-connect' ) : __( 'Something went wrong. Please try again.', 'job-connect' ) ) ); ?>
+			</div>
 		</div>
 	<?php endif; ?>
 

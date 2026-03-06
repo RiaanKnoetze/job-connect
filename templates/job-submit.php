@@ -10,10 +10,11 @@ defined( 'ABSPATH' ) || exit;
 if ( ! is_user_logged_in() && JC_Settings::get( 'jc_user_requires_account' ) === '1' ) {
 	?>
 	<div class="job-connect-require-login jc-content-wrap w-full my-6">
-		<div class="job-connect-notice job-connect-notice--warning mb-4 flex flex-row items-center gap-4 rounded-lg border-l-4 border-l-amber-500 border-zinc-200 bg-amber-50 py-3 pl-4 pr-4" role="alert">
-			<p class="!mb-0 m-0 min-w-0 flex-1 text-sm font-medium text-zinc-800">
+		<div class="job-connect-notice job-connect-notice--warning mb-4" role="alert">
+			<span class="job-connect-notice__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg></span>
+			<div class="job-connect-notice__content">
 				<?php esc_html_e( 'You must be logged in to submit a job.', 'job-connect' ); ?>
-			</p>
+			</div>
 		</div>
 		<div class="jc-auth-forms-row">
 			<div class="jc-auth-form-block jc-auth-form-login">
@@ -51,13 +52,16 @@ $val_textarea = function( $key ) use ( $edit_data ) {
 ?>
 <div class="job-connect-submit-form jc-content-wrap w-full my-4 px-4">
 	<?php if ( ! empty( $errors ) ) : ?>
-		<div class="job-connect-errors-wrapper mb-4" role="alert">
-			<p class="job-connect-errors-title m-0 mb-1.5 font-semibold text-jc-error-text"><?php esc_html_e( 'Please fix the following:', 'job-connect' ); ?></p>
-			<ul class="job-connect-errors list-none m-0 mb-4 p-4 rounded-lg border border-jc-error-border bg-jc-error-bg text-jc-error-text">
-				<?php foreach ( $errors as $err ) : ?>
-					<li><?php echo esc_html( $err ); ?></li>
-				<?php endforeach; ?>
-			</ul>
+		<div class="job-connect-notice job-connect-notice--error mb-4" role="alert">
+			<span class="job-connect-notice__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" /></svg></span>
+			<div class="job-connect-notice__content">
+				<p class="job-connect-notice__title"><?php esc_html_e( 'Please fix the following:', 'job-connect' ); ?></p>
+				<ul class="job-connect-notice__list">
+					<?php foreach ( $errors as $err ) : ?>
+						<li><?php echo esc_html( $err ); ?></li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
 		</div>
 	<?php endif; ?>
 

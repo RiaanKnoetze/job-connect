@@ -58,7 +58,8 @@ if ( ! empty( $tax_query ) ) {
 	$args['tax_query'] = array_merge( array( 'relation' => 'AND' ), $tax_query );
 }
 
-$job_query = new WP_Query( $args );
+$job_query     = new WP_Query( $args );
+$enable_salary = JC_Settings::get( 'jc_enable_salary' ) === '1';
 
 if ( ! empty( $search_keywords ) ) {
 	remove_filter( 'posts_join', array( 'JC_Job_Listings_Search', 'join_company' ), 10 );
@@ -78,11 +79,14 @@ $filter_atts = array_merge( $atts, array(
 	<?php endif; ?>
 	<?php if ( $job_query->have_posts() ) : ?>
 		<div class="job-listings job-listings-grid overflow-x-auto text-left text-sm text-zinc-950">
-			<div class="jc-listings-table grid min-w-0 sm:min-w-[max-content] grid-cols-1 sm:grid-cols-[2fr_1fr_1fr_auto]" role="table" aria-label="<?php esc_attr_e( 'Job listings', 'job-connect' ); ?>">
+			<div class="jc-listings-table grid min-w-0 sm:min-w-[max-content] grid-cols-1 <?php echo $enable_salary ? 'sm:grid-cols-[2fr_auto_auto_auto_auto]' : 'sm:grid-cols-[2fr_auto_auto_auto]'; ?>" role="table" aria-label="<?php esc_attr_e( 'Job listings', 'job-connect' ); ?>">
 				<div class="contents jc-listings-header text-zinc-500" role="row">
 					<div class="jc-col-job min-w-0 border-b border-zinc-950/10 px-4 py-2 font-medium" role="columnheader"><?php esc_html_e( 'Job', 'job-connect' ); ?></div>
-					<div class="jc-col-location min-w-0 border-b border-zinc-950/10 px-4 py-2 font-medium" role="columnheader"><?php esc_html_e( 'Location', 'job-connect' ); ?></div>
-					<div class="jc-col-type min-w-0 border-b border-zinc-950/10 px-4 py-2 font-medium" role="columnheader"><?php esc_html_e( 'Type', 'job-connect' ); ?></div>
+					<div class="jc-col-location border-b border-zinc-950/10 px-4 py-2 font-medium" role="columnheader"><?php esc_html_e( 'Location', 'job-connect' ); ?></div>
+					<div class="jc-col-type border-b border-zinc-950/10 px-4 py-2 font-medium" role="columnheader"><?php esc_html_e( 'Type', 'job-connect' ); ?></div>
+				<?php if ( $enable_salary ) : ?>
+					<div class="jc-col-salary border-b border-zinc-950/10 px-4 py-2 font-medium" role="columnheader"><?php esc_html_e( 'Salary', 'job-connect' ); ?></div>
+				<?php endif; ?>
 					<div class="jc-col-actions shrink-0 border-b border-zinc-950/10 px-4 py-2 font-medium" role="columnheader"><span class="sr-only"><?php esc_html_e( 'Actions', 'job-connect' ); ?></span></div>
 				</div>
 				<?php
